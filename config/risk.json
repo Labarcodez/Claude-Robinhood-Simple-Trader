@@ -1,7 +1,7 @@
 {
   "mode": "paper",
   "max_position_pct": 0.25,
-  "max_total_exposure_pct": 0.80,
+  "max_total_exposure_pct": 0.95,
   "max_open_positions": 10,
   "max_daily_loss_pct": 0.03,
   "max_order_pct": 0.25,
