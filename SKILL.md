@@ -1,61 +1,81 @@
 # Simple Trading Skill
 
-Operate the Simple Claude Robinhood Trader.
+Operate the Simple Claude Robinhood Trader as a LIVE-only autonomous equity
+trader.
 
-Inspect the currently connected Robinhood MCP tools before trading. Prefer account, buying power, positions, open orders, quotes, historical data, fundamentals, earnings/event data, order review, order placement, and order status.
+Claude is the trading brain. The local Python supervisor provides scheduling,
+persistent state, duplicate-order protection, logging and recovery. Robinhood
+MCP is the source of broker/account/market data and the execution interface.
 
-Before a new position, inspect local state with:
+There are NO arbitrary portfolio percentage, position-count, daily-loss,
+order-size, confidence, reward/risk or daily-trade hard limits. Claude reads
+the actual Robinhood wallet/account state and decides sizing. Operational
+checks remain mandatory.
 
-```bash
+Before any new order:
+1. Read account/buying power.
+2. Read positions and open orders.
+3. Reconcile unresolved local order intents.
+4. Confirm tradability and fresh market data.
+5. Decide size from live account state and thesis.
+6. Run execution_guard.
+7. Review the order.
+8. Reserve the order intent.
+9. Place through Robinhood MCP.
+10. Verify broker status/fill/position state.
+
+Never blindly retry an order with unknown status.
+
+## Autonomous supervisor
+
+Run:
+python supervisor.py
+
+The supervisor repeatedly launches Claude headlessly, prevents overlapping
+cycles, honors the kill switch, logs failures/timeouts and lets the next cycle
+reconcile broker state before acting again.
+
+Configure:
+TRADING_INTERVAL_SECONDS (default 60)
+CLAUDE_CYCLE_TIMEOUT_SECONDS (default 600)
+CLAUDE_COMMAND (default "claude -p")
+
+The exact Claude Code/MCP environment must be configured on the machine. A
+scheduler process alone cannot manufacture a Robinhood MCP connection.
+
+## Universe
+
+Discover ALL tradable long U.S. equities with 0 < current price < $8.00.
+Scanner filters only rank/prioritize. Use multiple passes when capped.
+
+No options, shorting, margin borrowing, crypto, OTC or leveraged products.
+
+## Momentum/FOMO
+
+Use account, scanner, quotes, historical candles/volume, technicals,
+fundamentals, earnings/events, Level 2, tradability and order tools available
+from Robinhood.
+
+FOMO score 0-100:
+reward acceleration, RVOL, volume acceleration, breakout/retest, persistence,
+relative strength, catalyst, liquidity/depth;
+penalize extension, rejection, volume fade, spread, thin depth and stale data.
+
+High score is research priority, not an automatic buy.
+
+## Candles
+
+Use get_equity_historicals for serious candidates. Inspect bodies, wicks,
+higher highs/lows, breakout/retest structure and per-bar volume. Render with
+chart.py when visual inspection is available.
+
+## Kill switch
+
+Stop new trading activity with:
+python run.py --kill
+
+Clear it with:
+python run.py --unkill
+
+Inspect status with:
 python run.py --status
-```
-
-The local safety layer is authoritative.
-
-LIVE: this project places real Robinhood orders. Use only the Robinhood MCP for execution, review before submission when supported, and verify broker state afterward. If state is ambiguous, reconcile instead of blindly retrying.
-
-If account, positions, buying power, required market data, or order state cannot be verified, do not open a new position.
-
-## Universe and discovery
-
-The discovery universe is ALL tradable long U.S. equities with 0 < current price < $8.00.
-
-Do not add arbitrary market-cap, sector, exchange, minimum-volume, minimum-price, watchlist, popularity, gap, momentum, or FOMO filters to the discovery universe.
-
-Use scanner filters to rank/prioritize candidates. If result limits require it, run multiple complementary scans/passes and merge/deduplicate results. Report approximate discovery coverage rather than pretending a capped scan covered everything.
-
-## Fast momentum / FOMO skill
-
-When scanning for fast-moving equities, use the full equity research chain rather than a single scanner result.
-
-Required Robinhood workflow:
-- Account/performance: get_accounts, get_portfolio, get_realized_pnl, get_pnl_trade_history
-- Discovery: search, get_scans, get_scanner_filter_specs, create_scan, run_scan, update_scan_filters, update_scan_config
-- Watchlists: get_watchlists, get_watchlist_items, get_popular_watchlists, create_watchlist, update_watchlist, follow_watchlist, unfollow_watchlist, add_to_watchlist, remove_from_watchlist
-- Market: get_equity_quotes, get_equity_historicals, get_equity_technical_indicators, get_equity_price_book, get_equity_fundamentals, get_financials, get_earnings_results, get_earnings_calendar, get_indexes, get_index_quotes
-- Portfolio/execution: get_equity_positions, get_equity_tax_lots, get_equity_orders, get_equity_tradability, review_equity_order, place_equity_order, cancel_equity_order
-
-Do not call options or crypto tools unless the project scope is explicitly changed.
-
-### Candle + volume requirement
-
-A candidate is not fully researched until its intraday OHLCV has been examined. Use get_equity_historicals and inspect:
-- candle bodies and wicks
-- higher highs/lows
-- breakout/retest structure
-- volume per bar
-- volume expansion versus prior bars
-- volume collapse after a spike
-
-When visual confirmation is useful, save the returned bars as JSON and run:
-python chart.py --input <json> --symbol <SYMBOL> --output data/charts/<SYMBOL>.png
-
-The chart contains both candlesticks and a separate volume panel. Never claim to have visually inspected a chart unless the generated image was actually available for inspection.
-
-### FOMO score
-
-Score 0-100 using configurable weights. Reward acceleration, relative volume, volume acceleration, breakout quality, persistence, relative strength, catalyst/event context and liquidity. Penalize spread, thin Level 2 depth, volume fade, excessive VWAP extension, rejection wicks, and stale data.
-
-A high score identifies a candidate for deeper research. It does not override the entry trigger or deterministic risk layer.
-
-Always record why the candidate is early enough to enter rather than simply being the stock that already made the move.
