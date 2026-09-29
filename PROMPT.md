@@ -15,7 +15,7 @@ If an order times out or status is unknown, query the existing broker order befo
 
 The local safety layer is authoritative. Never bypass it.
 
-Default mode is PAPER. Do not switch to live because a trade looks attractive.
+This project uses LIVE Robinhood execution. Do not simulate fills or paper trades. Real orders must still pass every configured risk, tradability, freshness, and order-review check.
 
 Use multiple independent evidence types where available. When evidence conflicts, reduce confidence or do not trade.
 
