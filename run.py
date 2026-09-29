@@ -2,6 +2,7 @@ import argparse
 from state import kill_active, mode, set_kill
 from risk import load_config
 from journal import connect, recent, log_event
+from execution_guard import unresolved
 
 try:
     from dotenv import load_dotenv
@@ -15,20 +16,25 @@ def status():
     print("=== SIMPLE CLAUDE ROBINHOOD TRADER ===")
     print("mode:", mode())
     print("kill_switch:", kill_active())
-    print("max_position_pct:", c["max_position_pct"])
-    print("max_total_exposure_pct:", c["max_total_exposure_pct"])
-    print("max_daily_loss_pct:", c["max_daily_loss_pct"])
-    print("max_open_positions:", c["max_open_positions"])
+    print("risk_mode:", c.get("mode", "account_aware"))
+    print("portfolio_limits: NONE")
+    print("position_limits: NONE")
+    print("daily_loss_limit: NONE")
+    print("order_size_limit: NONE")
+    print("new_positions_per_day_limit: NONE")
+    print("\nUnresolved local order records:")
+    for row in unresolved():
+        print(row)
     print("\nRecent decisions:")
     for row in recent(10):
         print(row)
 
 def cycle():
     if kill_active():
-        print("KILL SWITCH ACTIVE — no new trading activity.")
+        print("KILL SWITCH ACTIVE — no trading activity.")
         return
     print("Trading cycle ready.")
-    print("Claude should execute CLAUDE.md / PROMPT.md using the connected Robinhood MCP.")
+    print("Use supervisor.py for autonomous Claude + Robinhood MCP cycles.")
     log_event("cycle_ready", f"mode={mode()}")
 
 def main():
