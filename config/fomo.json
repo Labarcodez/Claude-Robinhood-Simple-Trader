@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "weights": {
+    "price_acceleration": 18,
+    "relative_volume": 14,
+    "volume_acceleration": 12,
+    "breakout_quality": 14,
+    "persistence": 10,
+    "relative_strength": 8,
+    "catalyst": 8,
+    "liquidity_depth": 8
+  },
+  "penalties": {
+    "vwap_extension": 4,
+    "wide_spread": 6,
+    "thin_book": 5,
+    "volume_fade": 6,
+    "rejection_wicks": 4,
+    "stale_data": 10
+  }
+}
