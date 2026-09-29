@@ -1,8 +1,17 @@
 # Claude Robinhood Simple Trader
 
-Simple architecture: Claude is the trading brain, Robinhood MCP is the broker, and a tiny Python layer provides hard risk controls, persistence, scheduling, and a kill switch.
+A small LIVE-only Robinhood equity trader where Claude is the trading brain, Robinhood MCP is the broker/data interface, and Python provides scheduling, persistent state, duplicate-order protection, charting, logging and recovery.
 
-This is a live-trading project. Claude uses the Robinhood MCP to place real broker orders; the local Python layer provides hard risk controls, persistence, scheduling, and a kill switch.
+## What changed
+
+- Claude reads the live Robinhood account/wallet and decides position sizing.
+- Removed arbitrary portfolio percentage, position-count, daily-loss, order-size, confidence, reward/risk and daily-trade hard limits.
+- Kept only operational safeguards: kill switch, valid broker state, broker buying power, tradability, fresh data, duplicate-order protection, order review and post-order reconciliation.
+- Added an always-on supervisor.py that launches Claude repeatedly, prevents overlapping cycles, records failures/timeouts and lets the next cycle reconcile broker state before acting.
+- scheduler.py remains as a backward-compatible entry point to the supervisor.
+- Added transparent FOMO/chase scoring configuration.
+- Improved charts with timestamps, EMA 9, EMA 20, VWAP and volume.
+- Added deterministic tests for the local execution guards.
 
 ## Setup
 
@@ -13,30 +22,42 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Connect the official Robinhood Trading MCP in Claude:
-`https://agent.robinhood.com/mcp/trading`
+Connect the official Robinhood Trading MCP in Claude: https://agent.robinhood.com/mcp/trading
 
-Run:
+## Run
 
 ```bash
-python run.py
 python run.py --status
 python run.py --kill
 python run.py --unkill
-python scheduler.py
+python supervisor.py
 pytest
 ```
 
+Optional environment variables:
+
+```bash
+TRADING_INTERVAL_SECONDS=60
+CLAUDE_CYCLE_TIMEOUT_SECONDS=600
+CLAUDE_COMMAND="claude -p"
+```
+
+The exact Claude Code command and MCP connection must be configured on the machine. A Python scheduler cannot create a Robinhood MCP connection by itself. Do not consider the system autonomous until a real Claude cycle successfully reads the Robinhood account through the connected MCP.
+
 ## Trading universe
 
-Discovery covers ALL tradable long U.S. equities with a current price strictly below $8.00 and above $0. No arbitrary market-cap, sector, exchange, minimum-volume, watchlist, popularity, or momentum restriction is applied at discovery.
+Discovery covers ALL tradable long U.S. equities with a current price strictly below $8.00 and above $0. The $8 ceiling is the discovery universe, not a signal to buy cheap stocks.
 
-Scanner filters rank candidates; they do not define the universe. Liquidity, tradability, stale-data, spread, Level 2, and deterministic risk checks can still reject a candidate before a real order.
+No arbitrary market-cap, sector, exchange, minimum-volume, watchlist, popularity, momentum, gap or FOMO restriction is applied at discovery. Scanner filters rank candidates; they do not define the universe.
 
-Orders are real-money trades. Keep the kill switch available and verify the Robinhood account, risk limits, and order-review flow before running unattended.
+No options, shorting, margin borrowing, crypto, OTC or leveraged products.
 
 ## Architecture
 
-Claude -> broad discovery -> research/reasoning/decision -> local hard-risk check -> Robinhood MCP -> verify -> journal
+supervisor.py -> Claude -> Robinhood account -> broad sub-$8 discovery -> candle/volume/FOMO/Level 2 research -> Claude decision -> operational execution guard -> Robinhood order review/place/verify -> journal -> next cycle reconciliation.
 
-Keep this project intentionally small so it can be fairly compared with the complex trader.
+The supervisor does not contain a fake trading strategy. Claude remains responsible for market research and trade decisions.
+
+## Live trading warning
+
+Orders are real-money trades. The project does not guarantee profit. Fast momentum trading can lose money rapidly. Keep the kill switch available and verify the Robinhood MCP connection, account state and order workflow before running unattended.
