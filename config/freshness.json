@@ -1,0 +1,7 @@
+{
+  "quote_max_age_seconds": 5,
+  "level2_max_age_seconds": 5,
+  "scanner_max_age_seconds": 30,
+  "intraday_bar_max_age_seconds": 60,
+  "note": "These are data-validity thresholds, not portfolio or strategy risk limits."
+}
