@@ -1,6 +1,4 @@
 from pathlib import Path
-import os
-
 KILL_FILE = Path(__file__).parent / "data" / "KILL_SWITCH"
 
 def mode():
