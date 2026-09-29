@@ -1,5 +1,4 @@
 {
-  "mode": "paper",
   "max_position_pct": 0.10,
   "max_total_exposure_pct": 0.80,
   "max_open_positions": 10,
