@@ -26,7 +26,7 @@ def log_decision(**kwargs):
      broker_order_id,broker_status,metadata_json)
     VALUES (?,?,?,?,?,?,?,?,?,?,?)""", (
         datetime.now(timezone.utc).isoformat(),
-        kwargs.get("mode","paper"), kwargs.get("symbol"),
+        kwargs.get("mode","live"), kwargs.get("symbol"),
         kwargs.get("action","NO_ACTION"), kwargs.get("notional"),
         kwargs.get("confidence"), kwargs.get("thesis"),
         kwargs.get("risk_reason"), kwargs.get("broker_order_id"),
