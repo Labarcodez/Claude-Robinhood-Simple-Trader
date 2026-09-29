@@ -1,11 +1,12 @@
 {
-  "max_position_pct": 0.10,
-  "max_total_exposure_pct": 0.80,
-  "max_open_positions": 10,
-  "max_daily_loss_pct": 0.03,
-  "max_order_pct": 0.10,
-  "max_new_positions_per_day": 5,
-  "minimum_reward_risk": 1.5,
-  "minimum_confidence": 0.60,
-  "starting_cash": 1000.0
+  "mode": "account_aware",
+  "portfolio_limits": null,
+  "position_limits": null,
+  "daily_loss_limit": null,
+  "order_size_limit": null,
+  "new_positions_per_day_limit": null,
+  "minimum_reward_risk": null,
+  "minimum_confidence": null,
+  "starting_cash": null,
+  "description": "No arbitrary portfolio or strategy hard limits. Claude sizes trades from live Robinhood account state. Python enforces only operational execution validity."
 }
