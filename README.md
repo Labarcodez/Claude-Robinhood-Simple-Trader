@@ -2,7 +2,7 @@
 
 Simple architecture: Claude is the trading brain, Robinhood MCP is the broker, and a tiny Python layer provides hard risk controls, persistence, scheduling, and a kill switch.
 
-Default mode is PAPER. Python never places broker orders.
+This is a live-trading project. Claude uses the Robinhood MCP to place real broker orders; the local Python layer provides hard risk controls, persistence, scheduling, and a kill switch.
 
 ## Setup
 
@@ -27,7 +27,7 @@ python scheduler.py
 pytest
 ```
 
-Start with long U.S. equities only. Do not enable live trading until the paper/shadow experiment is validated.
+Start with long U.S. equities only. Orders are real-money trades. Keep the kill switch available and verify the Robinhood account, risk limits, and order-review flow before running unattended.
 
 ## Architecture
 
