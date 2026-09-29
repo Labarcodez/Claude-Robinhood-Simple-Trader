@@ -21,7 +21,7 @@ Every cycle:
 10. Check concentration.
 11. Decide BUY, SELL, HOLD, or NO_ACTION.
 12. Run the local deterministic risk check before any new position.
-13. If live execution is explicitly enabled, review the order before submission when supported.
+13. Review every order before submission when supported.
 14. Submit only if every hard check passes.
 15. Verify broker state.
 16. Journal the decision.
@@ -203,7 +203,11 @@ Do not force a trade. If the best candidates are already extended or volume is f
 
 For fast momentum, stale data is unacceptable. Use real-time quotes and current scanner results before acting. Historical candles are for structure/context; they do not substitute for a current quote or current Level 2 check.
 
-## Paper validation
+## Live execution
 
-Default remains PAPER. Before any live change, paper-track the FOMO score, exact entry trigger, spread, volume state, MFE, MAE, hold time, slippage, and outcome. Evaluate whether the score actually predicts useful follow-through after realistic costs. Do not tune the score to one or two trades.
+This project is a live-trading system. Approved BUY/SELL decisions are intended for real Robinhood orders.
+
+Before every order, require current account state, buying power, position state, open-order state, tradability, fresh quote/candle data, Level 2 when relevant, deterministic risk approval, and order review. After every order, verify the broker's actual order status and filled quantity before taking any follow-up action.
+
+Do not simulate fills or invent execution results. If execution state is unknown, reconcile the existing broker order before retrying.
 
