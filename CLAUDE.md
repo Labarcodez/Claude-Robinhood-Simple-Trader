@@ -6,7 +6,7 @@ Goal: seek positive risk-adjusted returns over a large sample while protecting c
 
 Use the connected official Robinhood Trading MCP. Inspect the actually available tools before using them. Never invent account balances, quotes, positions, fills, order IDs, or broker responses.
 
-Initial universe: long U.S. equities only. No options, shorting, margin borrowing, crypto, OTC, or leveraged products.
+Initial discovery universe: ALL tradable long U.S. equities with a current price greater than $0 and strictly below $8.00. This $8.00 ceiling is the only price-universe restriction. Do not impose arbitrary market-cap, sector, exchange, minimum-volume, minimum-price, watchlist, popularity, or momentum restrictions that prevent discovery. Scanner filters are discovery/ranking aids, not the definition of the universe. No options, shorting, margin borrowing, crypto, OTC, or leveraged products.
 
 Every cycle:
 1. Read account and buying power.
@@ -14,7 +14,7 @@ Every cycle:
 3. Check local kill switch and risk configuration.
 4. Review recent journal.
 5. Assess broad market regime.
-6. Scan a small number of candidates.
+6. Discover broadly across the entire configured sub-$8 universe using available scanner/search/watchlist tools; use multiple scans/passes when result limits prevent broad coverage.
 7. Research price/volume, trend/momentum, volatility, fundamentals, catalysts/news, relative strength, and portfolio context where available.
 8. Build an explicit thesis.
 9. Define entry, invalidation/stop, exit/target logic, reward/risk, confidence, and maximum loss.
@@ -36,11 +36,14 @@ Hard rules:
 - Do not chase FOMO.
 - Do not average down automatically.
 - Do not use one indicator as a complete strategy.
+- A discovery filter must not silently become a universe restriction.
+- Price eligibility is 0 < current price < $8.00.
 
 Learning: evaluate thesis quality, entry timing, risk sizing, exit discipline, and whether outcomes were skill or luck. Do not rewrite rules because of one trade. Avoid hindsight and look-ahead bias.
 
 End each cycle with:
 MARKET REGIME:
+DISCOVERY COVERAGE:
 TOP CANDIDATES:
 ACTION:
 SYMBOL:
@@ -112,6 +115,23 @@ For this equity-only trader, use every relevant Robinhood tool category rather t
 
 The current project deliberately does NOT use options or crypto tools. Do not call unrelated tools just to increase tool-call count.
 
+## Broad sub-$8 discovery
+
+Discovery and ranking are separate stages.
+
+Stage 1 — universe:
+- Accept every valid positive-price U.S. equity with current price strictly below $8.00.
+- Do not require a stock to already be moving.
+- Do not require high RVOL, high volume, a gap, a breakout, a catalyst, a minimum market cap, a particular exchange, or a watchlist membership to enter discovery.
+- Do not only scan popular or preselected symbols.
+- If a single scanner query has a result cap, run multiple complementary scans/passes and merge/deduplicate results.
+- Record approximate discovery coverage and any API/result-limit constraint instead of pretending the entire universe was scanned.
+
+Stage 2 — ranking:
+After discovery, rank candidates using price acceleration, relative volume, volume acceleration, candles, VWAP, breakouts/retests, relative strength, catalysts, Level 2, spread, liquidity, technical indicators, fundamentals, earnings, and tradability.
+
+A ranking factor can lower a candidate's priority or reject it for an actual trade. It must not silently prevent that stock from being discovered.
+
 ## Fast-momentum / FOMO scanner
 
 Treat "FOMO" as a measurable market condition, not a feeling or a guarantee. The objective is to identify stocks where price acceleration, volume participation, breakout behavior, liquidity, and catalyst/attention evidence are occurring together.
@@ -119,8 +139,8 @@ Treat "FOMO" as a measurable market condition, not a feeling or a guarantee. The
 Start with Robinhood scanner discovery:
 1. Call get_scanner_filter_specs before creating or modifying a scan.
 2. Inspect get_scans for existing scans.
-3. Reuse or create a dedicated fast-momentum scan.
-4. Run the scan repeatedly during the session; do not wait for a single end-of-cycle snapshot.
+3. Reuse or create dedicated fast-momentum scans, but do not treat their filters as the universe definition.
+4. Run multiple complementary scans when needed to cover the sub-$8 universe.
 5. Use get_equity_quotes on the strongest candidates (up to the tool limit).
 6. Pull intraday OHLCV with get_equity_historicals for the finalists.
 
@@ -197,6 +217,8 @@ For the top candidates also report:
 - expected reward/risk after spread
 - why the setup is early enough to trade rather than chasing
 
+Top 10 is presentation only. It is not a discovery limit.
+
 Do not force a trade. If the best candidates are already extended or volume is fading, return NO_ACTION and keep monitoring.
 
 ## Data freshness
@@ -210,4 +232,3 @@ This project is a live-trading system. Approved BUY/SELL decisions are intended 
 Before every order, require current account state, buying power, position state, open-order state, tradability, fresh quote/candle data, Level 2 when relevant, deterministic risk approval, and order review. After every order, verify the broker's actual order status and filled quantity before taking any follow-up action.
 
 Do not simulate fills or invent execution results. If execution state is unknown, reconcile the existing broker order before retrying.
-
