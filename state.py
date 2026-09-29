@@ -4,7 +4,7 @@ import os
 KILL_FILE = Path(__file__).parent / "data" / "KILL_SWITCH"
 
 def mode():
-    return os.getenv("TRADING_MODE", "paper").lower()
+    return "live"
 
 def kill_active():
     return KILL_FILE.exists()
