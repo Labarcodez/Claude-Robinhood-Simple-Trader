@@ -1,9 +1,6 @@
-import os, time, subprocess
-from pathlib import Path
+#!/usr/bin/env python3
+"""Backward-compatible entry point for the autonomous supervisor."""
+from supervisor import main
 
-ROOT = Path(__file__).parent
-interval = int(os.getenv("TRADING_INTERVAL_SECONDS", "900"))
-print(f"Scheduler started. Interval: {interval}s. Ctrl+C to stop.")
-while True:
-    subprocess.run(["python", str(ROOT / "run.py")], cwd=ROOT)
-    time.sleep(interval)
+if __name__ == "__main__":
+    main()
