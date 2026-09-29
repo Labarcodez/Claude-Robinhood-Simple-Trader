@@ -1,37 +1,56 @@
-import json
-from pathlib import Path
-from dataclasses import dataclass
+"""Broker-state-aware execution guards.
 
-CONFIG_PATH = Path(__file__).parent / "config" / "risk.json"
+This module intentionally does not impose portfolio percentage, position-count,
+daily-loss, reward/risk, or trade-frequency limits. Sizing and trade selection
+belong to Claude using the live Robinhood account state.
+
+The guards here are operational protections only: kill switch, valid broker
+state, positive order quantity/notional, tradability, duplicate-order
+prevention, fresh-data checks, and reconciliation requirements.
+"""
+
+from dataclasses import dataclass
+from datetime import datetime, timezone
+
 
 @dataclass
-class RiskDecision:
+class ExecutionDecision:
     allowed: bool
     reason: str
 
-def load_config():
-    return json.loads(CONFIG_PATH.read_text())
 
-def evaluate_new_position(equity, current_exposure, proposed_notional,
-                          open_positions, daily_pnl_pct, new_positions_today,
-                          symbol_exposure_after=0.0, kill_switch=False):
-    c = load_config()
+def validate_order(
+    *,
+    action: str,
+    quantity: float,
+    notional: float,
+    buying_power: float,
+    tradable: bool,
+    kill_switch: bool = False,
+):
     if kill_switch:
-        return RiskDecision(False, "kill switch active")
-    if equity <= 0:
-        return RiskDecision(False, "invalid equity")
-    if proposed_notional <= 0:
-        return RiskDecision(False, "non-positive proposed notional")
-    if proposed_notional > equity * c["max_order_pct"]:
-        return RiskDecision(False, "order exceeds maximum order size")
-    if symbol_exposure_after > equity * c["max_position_pct"]:
-        return RiskDecision(False, "post-trade symbol exposure exceeds position limit")
-    if current_exposure + proposed_notional > equity * c["max_total_exposure_pct"]:
-        return RiskDecision(False, "post-trade total exposure exceeds total limit")
-    if open_positions >= c["max_open_positions"]:
-        return RiskDecision(False, "maximum open positions reached")
-    if new_positions_today >= c["max_new_positions_per_day"]:
-        return RiskDecision(False, "daily new-position limit reached")
-    if daily_pnl_pct <= -c["max_daily_loss_pct"]:
-        return RiskDecision(False, "daily loss limit reached")
-    return RiskDecision(True, "all hard risk checks passed")
+        return ExecutionDecision(False, "kill switch active")
+    if action not in {"BUY", "SELL"}:
+        return ExecutionDecision(False, "invalid equity action")
+    if quantity <= 0:
+        return ExecutionDecision(False, "non-positive quantity")
+    if notional <= 0:
+        return ExecutionDecision(False, "non-positive notional")
+    if buying_power < 0:
+        return ExecutionDecision(False, "invalid broker buying power")
+    if action == "BUY" and notional > buying_power:
+        return ExecutionDecision(False, "order exceeds broker-reported buying power")
+    if not tradable:
+        return ExecutionDecision(False, "broker reports security is not tradable")
+    return ExecutionDecision(True, "operational execution checks passed")
+
+
+def data_is_fresh(observed_at, max_age_seconds: float) -> bool:
+    if max_age_seconds < 0:
+        return False
+    if isinstance(observed_at, str):
+        observed_at = datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
+    if observed_at.tzinfo is None:
+        observed_at = observed_at.replace(tzinfo=timezone.utc)
+    age = (datetime.now(timezone.utc) - observed_at).total_seconds()
+    return 0 <= age <= max_age_seconds
