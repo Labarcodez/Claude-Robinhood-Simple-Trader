@@ -27,10 +27,16 @@ python scheduler.py
 pytest
 ```
 
-Start with long U.S. equities only. Orders are real-money trades. Keep the kill switch available and verify the Robinhood account, risk limits, and order-review flow before running unattended.
+## Trading universe
+
+Discovery covers ALL tradable long U.S. equities with a current price strictly below $8.00 and above $0. No arbitrary market-cap, sector, exchange, minimum-volume, watchlist, popularity, or momentum restriction is applied at discovery.
+
+Scanner filters rank candidates; they do not define the universe. Liquidity, tradability, stale-data, spread, Level 2, and deterministic risk checks can still reject a candidate before a real order.
+
+Orders are real-money trades. Keep the kill switch available and verify the Robinhood account, risk limits, and order-review flow before running unattended.
 
 ## Architecture
 
-Claude -> research/reasoning/decision -> local hard-risk check -> Robinhood MCP -> verify -> journal
+Claude -> broad discovery -> research/reasoning/decision -> local hard-risk check -> Robinhood MCP -> verify -> journal
 
 Keep this project intentionally small so it can be fairly compared with the complex trader.
