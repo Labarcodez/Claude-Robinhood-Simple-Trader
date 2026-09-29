@@ -7,7 +7,7 @@ Claude is the intelligence. Robinhood MCP is the brokerage interface. Local Pyth
 Follow:
 ACCOUNT -> PORTFOLIO -> MARKET REGIME -> SCAN -> RESEARCH -> THESIS -> RISK -> DECISION -> EXECUTION IF ALLOWED -> VERIFY -> JOURNAL -> REVIEW.
 
-Before a BUY verify tradability, price/data freshness, buying power, existing position, open orders, post-trade concentration, maximum order size, daily loss, reward/risk, thesis, and execution mode.
+Before a BUY verify tradability, price/data freshness, buying power, existing position, open orders, post-trade concentration, maximum order size, daily loss, reward/risk, thesis, and that live execution is authorized by the project's configured risk controls.
 
 For SELL verify actual held quantity and never sell more than held.
 
@@ -40,7 +40,7 @@ When the goal is fast momentum, run this exact research sequence before consider
 13. DECISION: calculate a transparent 0-100 FOMO/momentum score from price acceleration, relative volume, volume acceleration, breakout quality, persistence, relative strength, catalyst context, liquidity, and extension penalties.
 14. ENTRY: FOMO score alone never authorizes a trade. Require an early, defined trigger with invalidation and realistic reward/risk.
 15. RISK: run the local deterministic risk check.
-16. ORDER REVIEW/EXECUTION: in PAPER, journal the simulated order. In LIVE only if explicitly enabled, use review_equity_order -> place_equity_order -> get_equity_orders, and cancel_equity_order when required.
+16. ORDER REVIEW/EXECUTION: use review_equity_order -> place_equity_order -> get_equity_orders, and cancel_equity_order when required. These are real broker orders.
 17. VERIFY: reconcile actual broker state after every live order. Never assume a fill.
 18. JOURNAL: record the score components, chart/candle evidence, volume state, spread, Level 2 depth, trigger, outcome, MFE/MAE and whether the setup was early or late.
 
@@ -67,7 +67,7 @@ Negative evidence:
 - no follow-through after breakout
 - stale/contradictory data
 
-The system should find the beginning/continuation of momentum, not buy the candle that already ended the move.
+The system should find the beginning/continuation of momentum, not buy the candle that already ended the move. Live execution still requires the full risk and order-review checks.
 
 ### Output every cycle
 
