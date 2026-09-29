@@ -2,7 +2,7 @@
 
 Operate the Simple Claude Robinhood Trader.
 
-Inspect the currently connected Robinhood MCP tools before trading. Prefer account, buying power, positions, open orders, quotes, historical data, fundamentals, news, order review, order placement, and order status.
+Inspect the currently connected Robinhood MCP tools before trading. Prefer account, buying power, positions, open orders, quotes, historical data, fundamentals, earnings/event data, order review, order placement, and order status.
 
 Before a new position, inspect local state with:
 
@@ -15,6 +15,14 @@ The local safety layer is authoritative.
 LIVE: this project places real Robinhood orders. Use only the Robinhood MCP for execution, review before submission when supported, and verify broker state afterward. If state is ambiguous, reconcile instead of blindly retrying.
 
 If account, positions, buying power, required market data, or order state cannot be verified, do not open a new position.
+
+## Universe and discovery
+
+The discovery universe is ALL tradable long U.S. equities with 0 < current price < $8.00.
+
+Do not add arbitrary market-cap, sector, exchange, minimum-volume, minimum-price, watchlist, popularity, gap, momentum, or FOMO filters to the discovery universe.
+
+Use scanner filters to rank/prioritize candidates. If result limits require it, run multiple complementary scans/passes and merge/deduplicate results. Report approximate discovery coverage rather than pretending a capped scan covered everything.
 
 ## Fast momentum / FOMO skill
 
@@ -51,4 +59,3 @@ Score 0-100 using configurable weights. Reward acceleration, relative volume, vo
 A high score identifies a candidate for deeper research. It does not override the entry trigger or deterministic risk layer.
 
 Always record why the candidate is early enough to enter rather than simply being the stock that already made the move.
-
