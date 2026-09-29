@@ -8,7 +8,7 @@ metadata:
   modified: 2026-09-25T19:11:55.330Z
 ---
 
-The user asked me to "learn after every trade" and "learn from your trade and keep getting better" when trading their Robinhood agentic account. This file is where those lessons persist between sessions. Read it before trading and append a short entry after each closed trade. Entries are my own observations from real fills, so treat them as working hypotheses to keep testing, not as proven rules.
+The user asked me to learn after every trade and keep improving when trading their Robinhood agentic account. This file is where those lessons persist between sessions. Read it before trading and append a short entry after each closed trade. Entries are my own observations from real fills, so treat them as working hypotheses to keep testing, not as proven rules.
 
 ## 2026-09-25 (small account, about $25, sub-$5 momentum stocks)
 
@@ -88,5 +88,5 @@ The user asked me to use all my tools and to use market, limit, stop (stop-loss)
 The user told me to make sure I read the full tool list at https://robinhood.com/us/en/support/articles/trading-with-your-agent/. Tools I had not been using that I should:
 - **get_equity_price_book** (Level 2 order book, up to 4 symbols): call it before every entry. Require real depth at the inside: roughly 1,000+ shares on both the best bid and the best ask, with no big gaps in the next few levels. On 2026-09-25 AVAT showed only 108 shares at the best bid ($1.92) and 696 at the next, which fits the stop whipsaw and 6-cent spread I hit; MRLN showed 2,151 and 13,060 at its inside bids.
 - **get_pnl_trade_history / get_realized_pnl**: use these to verify my running score against the broker instead of my own arithmetic. Checked 2026-09-25: broker realized P&L for the 6 trades summed to -$1.08, matching the account drop from $24.55 to $23.47.
-- **get_equity_technical_indicators** (RSI, MACD, Bollinger, moving averages, VWAP), **get_earnings_calendar**, **get_equity_news** and **get_equity_fundamentals** for context before entries.
+- **get_equity_technical_indicators** (RSI, MACD, Bollinger, moving averages, VWAP), **get_earnings_calendar**, **get_earnings_results**, and **get_equity_fundamentals** for context before entries. Use external web/news access separately when available; do not invent a Robinhood equity-news tool.
 - The page documents no bracket, OCO or trailing-stop orders, which is why I split shares between a limit sell and a stop-market sell. Limited-margin accounts can spend sale proceeds right away.
