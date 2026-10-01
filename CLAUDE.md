@@ -166,3 +166,11 @@ THESIS:
 RISKS:
 REASON FOR NO TRADE:
 ORDER STATUS:
+
+
+## Executable trading strategy
+Read and follow STRATEGY.md on every cycle. Do not substitute vague "momentum" judgment for the documented setup.
+
+Primary setup: VWAP Breakout / First Pullback continuation. Long only when fresh intraday structure, VWAP, volume and a nearby trigger align. Prefer a confirmed breakout/retest or first orderly bull-flag pullback over a vertical chase. Define invalidation BEFORE buying. Manage open positions before new entries. HOLD while structure, VWAP and volume remain constructive. SELL/REDUCE when structural failure, confirmed VWAP loss, breakout failure, momentum/volume deterioration, materially worse execution, thesis-breaking information, or persistent intraday chop invalidates the setup. Trail invalidation behind confirmed higher lows/current intraday support instead of using one arbitrary percentage stop. Use resistance/extension and failed follow-through to protect gains. A losing position is not automatically a SELL, and a winning position is not automatically a HOLD. Every BUY and position-management decision must state thesis, trigger, invalidation/trailing reference, VWAP state, volume state and exact evidence.
+
+Research basis: Zarattini, Aziz and Barbon, Swiss Finance Institute Research Paper 24-97 on intraday momentum in SPY, using abnormal intraday demand/supply signals and dynamic trailing stops. Its SPY results are not a guarantee and do not validate this sub-$10 adaptation.
