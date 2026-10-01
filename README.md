@@ -61,3 +61,6 @@ The supervisor does not contain a fake trading strategy. Claude remains responsi
 ## Live trading warning
 
 Orders are real-money trades. The project does not guarantee profit. Fast momentum trading can lose money rapidly. Keep the kill switch available and verify the Robinhood MCP connection, account state and order workflow before running unattended.
+
+## Trading strategy
+The live trader now follows `STRATEGY.md`: a VWAP breakout / first-pullback intraday momentum strategy with volume confirmation and structure-based dynamic exits. Position management is part of the strategy, so every cycle reevaluates open positions for HOLD, REDUCE or SELL based on thesis validity, VWAP, structure, volume, execution quality and fresh information. This is an evidence-based adaptation of published intraday-momentum research, not a guarantee of profitability.
