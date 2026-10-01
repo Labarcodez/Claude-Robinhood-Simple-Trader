@@ -12,6 +12,12 @@ import subprocess
 import time
 from pathlib import Path
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
+
 from journal import log_event
 from state import kill_active
 
@@ -21,6 +27,7 @@ TIMEOUT = max(30, int(os.getenv("CLAUDE_CYCLE_TIMEOUT_SECONDS", "600")))
 CLAUDE_COMMAND = os.getenv("CLAUDE_COMMAND", "claude -p")
 PROMPT_FILE = ROOT / "PROMPT.md"
 LOCK_FILE = ROOT / "data" / "SUPERVISOR.lock"
+
 
 def acquire_lock():
     LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -32,11 +39,13 @@ def acquire_lock():
     except FileExistsError:
         return False
 
+
 def release_lock():
     try:
         LOCK_FILE.unlink()
     except FileNotFoundError:
         pass
+
 
 def build_prompt():
     return PROMPT_FILE.read_text() + """
@@ -48,6 +57,7 @@ Robinhood MCP. Never invent data or claim a fill without broker confirmation.
 If the local kill switch is active, take no trading action.
 </SUPERVISOR_CYCLE>
 """
+
 
 def run_once():
     if kill_active():
@@ -62,7 +72,11 @@ def run_once():
             raise RuntimeError("CLAUDE_COMMAND is empty")
         log_event("supervisor_start", f"command={CLAUDE_COMMAND}")
         result = subprocess.run(
-            command, input=build_prompt(), text=True, cwd=ROOT, timeout=TIMEOUT
+            command,
+            input=build_prompt(),
+            text=True,
+            cwd=ROOT,
+            timeout=TIMEOUT,
         )
         log_event("supervisor_finish", f"returncode={result.returncode}")
         return result.returncode
@@ -79,6 +93,7 @@ def run_once():
     finally:
         release_lock()
 
+
 def main():
     print(f"Claude supervisor started: interval={INTERVAL}s "
           f"timeout={TIMEOUT}s command={CLAUDE_COMMAND!r}")
@@ -86,6 +101,7 @@ def main():
         started = time.monotonic()
         run_once()
         time.sleep(max(1, INTERVAL - (time.monotonic() - started)))
+
 
 if __name__ == "__main__":
     main()
