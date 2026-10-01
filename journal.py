@@ -1,8 +1,10 @@
 from pathlib import Path
+import os
 import sqlite3, json
 from datetime import datetime, timezone
 
-DB_PATH = Path(__file__).parent / "data" / "trader.db"
+DB_PATH = Path(os.getenv("TRADER_DB", Path(__file__).parent / "data" / "trader.db"))
+
 
 def connect():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -18,6 +20,7 @@ def connect():
         ts TEXT NOT NULL, event TEXT NOT NULL, detail TEXT)""")
     con.commit()
     return con
+
 
 def log_decision(**kwargs):
     con = connect()
@@ -35,12 +38,14 @@ def log_decision(**kwargs):
     con.commit()
     con.close()
 
+
 def log_event(event, detail=""):
     con = connect()
     con.execute("INSERT INTO events (ts,event,detail) VALUES (?,?,?)",
                 (datetime.now(timezone.utc).isoformat(), event, detail))
     con.commit()
     con.close()
+
 
 def recent(limit=20):
     con = connect()
