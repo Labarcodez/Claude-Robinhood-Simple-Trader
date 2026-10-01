@@ -5,5 +5,7 @@ __pycache__/
 .env
 data/*.db
 data/*.sqlite
+data/KILL_SWITCH
+data/SUPERVISOR.lock
 logs/*
 !.gitkeep
