@@ -8,12 +8,17 @@ from pathlib import Path
 import sqlite3
 from datetime import datetime, timezone
 
-DB_PATH = Path(os.getenv("TRADER_DB", Path(__file__).parent / "data" / "trader.db"))
+DB_PATH = Path(__file__).parent / "data" / "trader.db"
+
+
+def _db_path():
+    return Path(os.getenv("TRADER_DB", str(DB_PATH)))
 
 
 def _connect():
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    con = sqlite3.connect(DB_PATH)
+    path = _db_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(path)
     con.execute("""CREATE TABLE IF NOT EXISTS order_guard (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         created_at TEXT NOT NULL,
