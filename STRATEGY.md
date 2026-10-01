@@ -66,3 +66,15 @@ FOMO is research priority, never an automatic BUY or an excuse to delay an exit.
 
 ## Required decision record
 For every position: entry thesis, thesis state (INTACT/WEAKENING/INVALIDATED), trigger/structure, VWAP relationship, volume state, trailing invalidation, target/resistance, action (HOLD/REDUCE/SELL), and exact evidence. Record the same fields before every new BUY.
+
+
+## Extended-hours trading
+The trader is allowed to operate during **pre-market and after-hours**, not only the regular 9:30 AM–4:00 PM ET session. Treat pre-market and after-hours as valid trading sessions when the Robinhood account, symbol and order mechanics permit execution.
+
+- Pre-market: prioritize fresh news/catalysts, relative volume, VWAP/session structure, breakouts and pullbacks using extended-hours data.
+- After-hours: actively manage existing positions and evaluate fresh setups using after-hours price/volume structure and new information.
+- Do not assume regular-session order mechanics apply. Robinhood currently requires limit-order behavior for extended-hours execution; market orders do not execute in extended hours, and stop/trailing-stop orders do not execute there. Use the actual Robinhood tool/account response to determine what order is currently executable.
+- Verify that the individual security is eligible for extended-hours trading and that the proposed quantity/order type is supported before submitting it.
+- Because extended-hours liquidity can be lower and volatility/spreads can be higher, execution quality and current Level 2/quote conditions become especially important, but do not impose an arbitrary blanket ban on extended-hours trades.
+- The strategy's thesis, invalidation, VWAP/session structure, volume and fresh evidence still govern BUY/HOLD/REDUCE/SELL decisions.
+- If an existing position needs an exit during extended hours, actively attempt an executable limit-order exit when supported rather than simply waiting for the next regular session.
