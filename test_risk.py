@@ -1,16 +1,42 @@
-from risk import evaluate_new_position
+from risk import data_is_fresh, validate_order
 
-def test_valid():
-    assert evaluate_new_position(1000,0,50,0,0,0,50).allowed
 
-def test_order_size():
-    assert not evaluate_new_position(1000,0,101,0,0,0,101).allowed
+def test_valid_buy():
+    assert validate_order(
+        action="BUY", quantity=1, notional=5,
+        buying_power=10, tradable=True
+    ).allowed
 
-def test_kill():
-    assert not evaluate_new_position(1000,0,50,0,0,0,50,True).allowed
 
-def test_daily_loss():
-    assert not evaluate_new_position(1000,0,50,0,-0.03,0,50).allowed
+def test_buy_cannot_exceed_buying_power():
+    assert not validate_order(
+        action="BUY", quantity=1, notional=11,
+        buying_power=10, tradable=True
+    ).allowed
 
-def test_symbol_cap():
-    assert not evaluate_new_position(1000,0,50,0,0,0,101).allowed
+
+def test_sell_can_execute_with_zero_buying_power():
+    assert validate_order(
+        action="SELL", quantity=1, notional=5,
+        buying_power=0, tradable=True
+    ).allowed
+
+
+def test_kill_switch():
+    assert not validate_order(
+        action="BUY", quantity=1, notional=5,
+        buying_power=10, tradable=True, kill_switch=True
+    ).allowed
+
+
+def test_non_tradable():
+    assert not validate_order(
+        action="BUY", quantity=1, notional=5,
+        buying_power=10, tradable=False
+    ).allowed
+
+
+def test_data_freshness_rejects_future_timestamp():
+    from datetime import datetime, timedelta, timezone
+    future = datetime.now(timezone.utc) + timedelta(seconds=2)
+    assert not data_is_fresh(future, 5)
