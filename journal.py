@@ -3,12 +3,17 @@ import os
 import sqlite3, json
 from datetime import datetime, timezone
 
-DB_PATH = Path(os.getenv("TRADER_DB", Path(__file__).parent / "data" / "trader.db"))
+DEFAULT_DB_PATH = Path(__file__).parent / "data" / "trader.db"
+
+
+def _db_path():
+    return Path(os.getenv("TRADER_DB", str(DEFAULT_DB_PATH)))
 
 
 def connect():
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    con = sqlite3.connect(DB_PATH)
+    path = _db_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(path)
     con.execute("""CREATE TABLE IF NOT EXISTS decisions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ts TEXT NOT NULL, mode TEXT NOT NULL, symbol TEXT,
