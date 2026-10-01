@@ -22,7 +22,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Connect the official Robinhood Trading MCP in Claude: https://agent.robinhood.com/mcp/trading
+Use the Robinhood Trading MCP and any other MCP/data connectors that are already available in Claude. The project does not require or request additional MCP connections; do not invoke connect/install/authorize flows.
 
 ## Run
 
@@ -46,7 +46,7 @@ The exact Claude Code command and MCP connection must be configured on the machi
 
 ## Trading universe
 
-Discovery covers ALL tradable long U.S. equities with a current price strictly below $8.00 and above $0. The $8 ceiling is the discovery universe, not a signal to buy cheap stocks.
+Discovery covers ALL tradable long U.S. equities with a current price strictly below $10.00 and above $0. The $10 ceiling is the discovery universe, not a signal to buy cheap stocks. With the current ~$23 account, every BUY is sized from actual Robinhood buying power and broker-reported tradability/fractional-share support.
 
 No arbitrary market-cap, sector, exchange, minimum-volume, watchlist, popularity, momentum, gap or FOMO restriction is applied at discovery. Scanner filters rank candidates; they do not define the universe.
 
@@ -54,9 +54,9 @@ No options, shorting, margin borrowing, crypto, OTC or leveraged products.
 
 ## Architecture
 
-supervisor.py -> Claude -> Robinhood account -> broad sub-$8 discovery -> candle/volume/FOMO/Level 2 research -> Claude decision -> operational execution guard -> Robinhood order review/place/verify -> journal -> next cycle reconciliation.
+supervisor.py -> Claude -> Robinhood account -> broad sub-$10 discovery -> open-position management -> candle/volume/FOMO/Level 2 research -> Claude decision -> operational execution guard -> Robinhood order review/place/verify -> journal -> next cycle reconciliation.
 
-The supervisor does not contain a fake trading strategy. Claude remains responsible for market research and trade decisions.
+The supervisor does not contain a fake trading strategy. Claude remains responsible for market research and trade decisions. Every cycle manages existing positions before new entries and explicitly reviews whether positions should be sold or held. The project is intended for intraday/day trading and should not intentionally carry positions overnight unless broker/account constraints require it.
 
 ## Live trading warning
 
