@@ -3,11 +3,13 @@
 These are not strategy limits. They prevent duplicate submissions and unsafe
 blind retries when broker state is unknown.
 """
+import os
 from pathlib import Path
 import sqlite3
 from datetime import datetime, timezone
 
-DB_PATH = Path(__file__).parent / "data" / "trader.db"
+DB_PATH = Path(os.getenv("TRADER_DB", Path(__file__).parent / "data" / "trader.db"))
+
 
 def _connect():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -27,8 +29,10 @@ def _connect():
     con.commit()
     return con
 
+
 def client_key(symbol, side, quantity, intent_id):
     return f"{symbol.upper()}:{side.upper()}:{quantity}:{intent_id}"
+
 
 def reserve(symbol, side, quantity, intent_id):
     key = client_key(symbol, side, quantity, intent_id)
@@ -48,6 +52,7 @@ def reserve(symbol, side, quantity, intent_id):
     finally:
         con.close()
 
+
 def mark_submitted(client_key_value, broker_order_id):
     con = _connect()
     con.execute(
@@ -58,14 +63,17 @@ def mark_submitted(client_key_value, broker_order_id):
     con.commit()
     con.close()
 
+
 def mark_status(client_key_value, status):
     con = _connect()
     con.execute(
         """UPDATE order_guard SET status=?, last_checked_at=?
            WHERE client_key=?""",
-        (status, datetime.now(timezone.utc).isoformat(), client_key_value))
+        (status, datetime.now(timezone.utc).isoformat(),
+         client_key_value))
     con.commit()
     con.close()
+
 
 def unresolved():
     con = _connect()
