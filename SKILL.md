@@ -26,6 +26,12 @@ Before any new order:
 
 Never blindly retry an order with unknown status.
 
+## Intraday behavior
+
+Each cycle manages existing positions before looking for new entries. Claude may BUY, SELL, or HOLD based on fresh evidence. It should seek intraday opportunities without manufacturing trades. Near the end of the regular session, explicitly review whether open positions should be exited for the day.
+
+Use all already-available MCP/data connectors when useful, but never invoke or request connect/install/authorization flows for another MCP. Never invent unavailable tools.
+
 ## Autonomous supervisor
 
 Run:
@@ -45,7 +51,7 @@ scheduler process alone cannot manufacture a Robinhood MCP connection.
 
 ## Universe
 
-Discover ALL tradable long U.S. equities with 0 < current price < $8.00.
+Discover ALL tradable long U.S. equities with 0 < current price < $10.00. The $10 ceiling is only a discovery ceiling. BUY sizing must come from actual Robinhood buying power and current broker rules.
 Scanner filters only rank/prioritize. Use multiple passes when capped.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
