@@ -8,17 +8,22 @@ from pathlib import Path
 
 CONFIG = Path(__file__).parent / "config" / "fomo.json"
 
+
 def load_config():
     return json.loads(CONFIG.read_text())
 
+
 def score(features):
     c = load_config()
+    weights = c["weights"]
+    total_weight = sum(float(w) for w in weights.values()) or 1.0
     total = 0.0
-    for name, weight in c["weights"].items():
-        total += float(features.get(name, 0)) * float(weight) / 100.0
+    for name, weight in weights.items():
+        total += float(features.get(name, 0)) * float(weight) / total_weight
     for name, penalty in c["penalties"].items():
         total -= float(features.get(name, 0)) * float(penalty) / 100.0
     return round(max(0.0, min(100.0, total)), 2)
+
 
 def chase_state(*, vwap_distance_pct, breakout_distance_pct,
                 upper_wick_pct, volume_acceleration,
