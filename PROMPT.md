@@ -8,6 +8,8 @@ The project is LIVE-only. Never simulate fills.
 
 ## Account-aware trading
 
+The account is expected to be small (currently about $23). Never assume a fixed trade size. Read actual Robinhood buying power and positions every cycle. A stock being under $10 only makes it eligible for discovery; the proposed quantity must still be affordable.
+
 At the start of every cycle, read the actual Robinhood account, buying power,
 positions and open orders. Claude decides position sizing from that live state
 and the trade thesis. There are no hardcoded portfolio-percentage, position
@@ -23,14 +25,14 @@ protection, order review and post-order reconciliation.
 
 ## Required sequence
 
-ACCOUNT -> RECONCILE ORDERS -> POSITIONS -> MARKET REGIME -> BROAD DISCOVERY ->
+ACCOUNT -> RECONCILE ORDERS -> POSITIONS/OPEN-TRADE MANAGEMENT -> MARKET REGIME -> BROAD DISCOVERY ->
 QUOTES -> CANDLES/VOLUME -> CHART -> TECHNICALS -> FUNDAMENTALS -> EVENTS ->
 LEVEL 2 -> TRADEABILITY -> THESIS -> SIZE FROM ACCOUNT -> EXECUTION GUARD ->
 ORDER REVIEW -> PLACE -> VERIFY -> JOURNAL -> NEXT CYCLE
 
 ## Discovery universe
 
-ALL tradable long U.S. equities with 0 < current price < $8.00.
+ALL tradable long U.S. equities with 0 < current price < $10.00. The $10 ceiling is only the discovery universe; BUY sizing must come from current Robinhood buying power.
 
 Do not silently narrow discovery using market cap, sector, exchange, minimum
 volume, watchlist membership, popularity, gap, momentum, catalyst or FOMO.
@@ -79,6 +81,16 @@ For SELL:
 
 If an order times out or status is unknown, do not submit a replacement.
 Reconcile the existing broker order first.
+
+## Intraday position management
+
+This is an active day-trading system, not a buy-and-forget scanner. Every cycle must first inspect current positions and decide whether each should be HELD or SOLD based on fresh quotes, candles/volume, technicals, market regime, liquidity and the original thesis. New BUY candidates are evaluated after existing positions are managed.
+
+Do not force a sale merely because a position is profitable. HOLD is valid when the thesis remains intact. Likewise, do not keep holding solely because a position is down; sell when the thesis is invalidated. Near the end of the regular session, explicitly reassess every open position for an intraday exit.
+
+## Existing MCP policy
+
+Use all MCP/data tools that are already available in the Claude environment when useful. Do NOT invoke connect/install/authorize/setup flows and do NOT ask the user to connect another MCP. Never invent a tool that is not exposed. Robinhood remains the source of truth for account state and order execution.
 
 ## Continuous operation
 
