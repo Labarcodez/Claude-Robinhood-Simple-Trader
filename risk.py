@@ -4,19 +4,28 @@ This module intentionally does not impose portfolio percentage, position-count,
 daily-loss, reward/risk, or trade-frequency limits. Sizing and trade selection
 belong to Claude using the live Robinhood account state.
 
-The guards here are operational protections only: kill switch, valid broker
-state, positive order quantity/notional, tradability, duplicate-order
-prevention, fresh-data checks, and reconciliation requirements.
+The guards here are operational protections only.
 """
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+
+CONFIG_PATH = Path(__file__).parent / "config" / "risk.json"
 
 
 @dataclass
 class ExecutionDecision:
     allowed: bool
     reason: str
+
+
+def load_config():
+    configured = os.getenv("TRADER_RISK_CONFIG")
+    path = Path(configured) if configured else CONFIG_PATH
+    return json.loads(path.read_text())
 
 
 def validate_order(
