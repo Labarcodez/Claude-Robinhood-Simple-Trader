@@ -1,4 +1,4 @@
-# Intraday Momentum Strategy — VWAP Breakout / Pullback
+# Day-Trading Strategy — Intraday Momentum, Trend Capture & Pressure-Based Exits
 
 This is the primary executable strategy for the live Simple Trader. It is adapted
 from published intraday-momentum research and is not a guarantee of profitability
@@ -13,10 +13,9 @@ appears and dynamic trailing stops that protect downside while allowing upside.
 The paper's results are for SPY and do not establish the same results for sub-$10
 stocks.
 
-## Core setup
+## Core setup — day trade, not scalping
 
-Find a stock below $10 that is proving demand, then enter continuation rather
-than chase a completed vertical move.
+Find a stock below $10 that is proving demand, then participate in a meaningful intraday move without chasing an exhausted spike. This is a day-trading system, not a high-frequency/scalping system: the goal is to capture the useful portion of an intraday trend, manage it continuously, and exit when the trend tops, pressure turns down, or the thesis fails.
 
 Normally require:
 - fresh session-appropriate OHLCV and a confirmed tradable quote;
@@ -71,14 +70,47 @@ is constructive, higher highs/higher lows continue, participation supports the
 move, and no thesis-breaking event appears. Do not sell solely because the trade
 is green.
 
-### REDUCE / TAKE PROFIT
+### REDUCE / TAKE PROFIT — protect the top of the move
 
-When execution mechanics allow, consider reducing into clearly identified
-resistance/extension, repeated upper wicks, climactic participation with weak
-follow-through, or a new high that cannot hold. For a tiny account, a full exit
-is acceptable when partial execution is impractical.
+The system cannot know the exact future high, so "sell at the top" means sell
+near the end of a confirmed intraday advance rather than waiting for a complete
+collapse. When a position makes a new high, continuously reassess whether buying
+pressure is still expanding. Consider a full or partial exit into resistance,
+large extension from VWAP, repeated upper-wick rejection, a failed new high,
+climactic volume with weak price follow-through, or a lower high after the peak.
+For a tiny account, a full exit is acceptable when partial execution is
+impractical.
 
-### SELL — thesis invalidation
+Pressure reversal is an active exit signal. Stronger evidence includes several
+of these appearing together: bids weakening or stepping down, asks remaining
+heavy, lower highs/lower lows, bearish candle closes, loss of the breakout level,
+loss of session VWAP, rising sell volume, and failure to reclaim the recent high.
+Do not wait for a fixed percentage loss or a distant stop when the original
+intraday pressure has clearly reversed. A single noisy tick is not enough by
+itself; seek confirmation from price structure, volume, VWAP and/or the order
+book when available.
+
+### SELL — topping, pressure reversal, or thesis invalidation
+
+Exit proactively when the advance is topping or selling pressure is taking
+control. The preferred sequence is to protect a strong winner as soon as the
+market stops confirming the highs, rather than giving the whole move back.
+
+### Sell-the-top / pressure checklist
+
+When a position is extended or has just printed a new high, check:
+- Did the latest high fail to hold?
+- Did price make a lower high after the peak?
+- Are consecutive candles closing weaker or below the prior candle lows?
+- Is volume increasing while price stops advancing or starts falling?
+- Is the bid weakening, stepping down, or losing depth while offers remain firm?
+- Did price lose the breakout/retest level or session VWAP?
+- Is the stock unable to reclaim the recent high after rejection?
+
+If multiple independent signals confirm pressure has turned down, SELL/REDUCE
+without waiting for a fixed target. Do not claim to have sold the exact high;
+the objective is to exit near the top while evidence is still favorable enough
+to obtain an executable fill.
 
 Exit when evidence shows:
 1. structural failure below the defined swing/pullback low or breakout level
@@ -93,10 +125,14 @@ Exit when evidence shows:
 
 Being down money alone is not the reason to sell; thesis invalidation is.
 
-## Dynamic trailing exit
+## Dynamic trailing exit and peak protection
 
 Do not use one arbitrary percentage stop for every stock. Initial invalidation
-comes from the setup's swing low or failed-breakout level. As price advances,
+comes from the setup's swing low or failed-breakout level. Once a position is
+profitable, the exit reference should move with the trade: record the most
+recent meaningful high, identify the first confirmed signs of exhaustion, and
+protect the remaining gain behind the newest confirmed higher low, VWAP or
+other current intraday support. As price advances,
 trail behind newly confirmed higher lows. VWAP may become a trailing reference
 when appropriate. After strong extension, protect gains behind current intraday
 support instead of giving the whole move back. Every trailing reference must be
