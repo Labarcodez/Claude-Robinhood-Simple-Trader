@@ -2,7 +2,7 @@
 
 This is the primary executable strategy for the live Simple Trader. It is adapted
 from published intraday-momentum research and is not a guarantee of profitability
-or independently validated on this repository's sub-$10 universe.
+or independently validated on this repository's broad all-equity universe.
 
 ## Research basis
 
@@ -10,23 +10,14 @@ Zarattini, Aziz and Barbon, "Beat the Market: An Effective Intraday Momentum
 Strategy for S&P500 ETF (SPY)" (Swiss Finance Institute Research Paper 24-97)
 describes trend-following entries when abnormal intraday demand/supply imbalance
 appears and dynamic trailing stops that protect downside while allowing upside.
-The paper's results are for SPY and do not establish the same results for sub-$10
+The paper's results are for SPY and do not establish the same results for broad all-equity
 stocks.
 
 ## Core setup — day trade, not scalping
 
-Find a stock below $10 that is proving demand, then participate in a meaningful intraday move without chasing an exhausted spike. This is a day-trading system, not a high-frequency/scalping system: the goal is to capture the useful portion of an intraday trend, manage it continuously, and exit when the trend tops, pressure turns down, or the thesis fails.
+Find a stock at any price that is proving demand, then participate in a meaningful intraday move without chasing an exhausted spike. This is a day-trading system, not a high-frequency/scalping system: the goal is to capture the useful portion of an intraday trend, manage it continuously, and exit when the trend tops, pressure turns down, or the thesis fails.
 
-Normally require:
-- fresh session-appropriate OHLCV and a confirmed tradable quote;
-- higher highs/higher lows or a clear breakout/reclaim structure;
-- price at/above the relevant session VWAP for a long;
-- meaningfully elevated relative volume/volume acceleration when the session
-  provides reliable volume; 2x is a useful reference, not a blind guarantee;
-- a nearby trigger such as opening-range high, prior session high, prior
-  intraday high, flat-top resistance or pullback/retest high;
-- a clear invalidation level before entry;
-- acceptable spread, depth and data freshness.
+Normally require fresh broker data, a coherent price/volume structure, a reason the stock is likely to move, an executable quote, a clear invalidation or exit reference, and acceptable execution conditions. VWAP, relative volume, opening-range levels, market cap, price, daily gain, catalysts and other indicators are evidence inputs—not mandatory gates. The strongest setup depends on current market conditions.
 
 A real catalyst is useful confirmation when available; never invent one.
 
@@ -62,9 +53,7 @@ decision still requires a coherent thesis and defined invalidation.
 
 ## Entry A — Breakout continuation
 
-BUY only after a fresh candle breaks a defined resistance/trigger while price is
-above the relevant session VWAP and breakout participation expands. Prefer
-confirmation/retest over chasing a single extended candle.
+BUY when current evidence shows a favorable intraday setup—not only an opening-range breakout when applicable. Valid entries may include confirmed breakouts, first pullbacks, VWAP reclaims, support reclaims, momentum continuation, consolidation breaks, failed-breakdown reversals, catalyst-driven moves, relative-strength continuation, and other structures supported by current price/volume/order-book evidence. Do not require a specific clock window, opening range, VWAP relationship, minimum price, market cap, daily percentage-gain ceiling, or bar-close-only trigger. The entry must still have a coherent thesis, current tradability, executable pricing, and a defined invalidation/exit plan.
 
 ## Entry B — First pullback / bull flag
 
@@ -75,10 +64,7 @@ renewed participation.
 
 ## Do not enter
 
-Avoid vertical extension far above VWAP with no nearby invalidation, repeated
-upper-wick rejection, immediate breakout failure, collapsing participation,
-materially poor spread/depth, stale/contradictory data, or an entry justified
-only because price already rose sharply.
+Do not enter when the broker state is unclear, data is stale or contradictory, the security/order is not tradable, execution is materially impaired, or the thesis has no credible trigger and invalidation. A stock being under $2, having a small market cap, or already being up more than 30% is not by itself a rejection reason. A highly extended move can still be traded when current evidence supports continuation or reversal, but do not buy solely because a percentage move is large.
 
 ## Scanner workflow
 
