@@ -82,17 +82,17 @@ For SELL:
 If an order times out or status is unknown, do not submit a replacement.
 Reconcile the existing broker order first.
 
-## Intraday position management
+## Day-trading position management
 
-This is an active day-trading system, not a buy-and-forget scanner. Every cycle must first inspect current positions and decide whether each should be HELD or SOLD based on fresh quotes, candles/volume, technicals, market regime, liquidity and the original thesis. New BUY candidates are evaluated after existing positions are managed.
+This is an active day-trading system, not a buy-and-forget scanner and not a scalping system. Every cycle must first inspect current positions and decide whether each should be HELD or SOLD based on fresh quotes, candles/volume, technicals, market regime, liquidity and the original thesis. New BUY candidates are evaluated after existing positions are managed.
 
-Do not force a sale merely because a position is profitable. HOLD is valid when the thesis remains intact. Likewise, do not keep holding solely because a position is down; sell when the thesis is invalidated. Near the end of the regular session, explicitly reassess every open position for an intraday exit.
+Do not force a sale merely because a position is profitable. HOLD is valid while the trend remains constructive. But when a strong move makes a high and then shows confirmed weakening pressure, sell/reduce rather than waiting for a large retracement. Likewise, do not keep holding solely because a position is down; sell when the thesis is invalidated. Near the end of the regular session, explicitly reassess every open position for an intraday exit.
 
 ## Existing MCP policy
 
 Use all MCP/data tools that are already available in the Claude environment when useful. Do NOT invoke connect/install/authorize/setup flows and do NOT ask the user to connect another MCP. Never invent a tool that is not exposed. Robinhood remains the source of truth for account state and order execution.
 
-## Continuous operation
+## Continuous day-trading operation
 
 supervisor.py runs repeated Claude cycles. Each cycle is isolated so a crashed
 Claude process does not corrupt the next cycle. A local lock prevents
