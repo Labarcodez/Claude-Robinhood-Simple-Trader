@@ -50,7 +50,7 @@ scheduler process alone cannot manufacture a Robinhood MCP connection.
 
 ## Universe
 
-Discover ALL tradable long U.S. equities with current price > $0. The $10 ceiling is only a discovery ceiling. BUY sizing must come from actual Robinhood buying power and current broker rules.
+Discover ALL tradable long U.S. equities with current price > $0, including sub-$2 stocks, low-market-cap stocks, and stocks already up more than 30% on the day. There is no discovery price ceiling, market-cap floor, or daily percentage-gain ceiling. BUY sizing must come from actual Robinhood buying power and current broker rules.
 Scanner filters only rank/prioritize. Use multiple passes when capped.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
