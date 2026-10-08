@@ -1,6 +1,6 @@
 # Claude Robinhood Simple Trader
 
-A small **LIVE-only** Robinhood equity trader where Claude is the trading brain,
+A small **LIVE-only** Robinhood day-trading equity trader where Claude is the trading brain,
 Robinhood MCP is the broker/data interface, and Python provides scheduling,
 persistent state, duplicate-order protection, charting, logging and recovery.
 
@@ -78,8 +78,7 @@ existing positions before new entries.
 
 ## Trading strategy
 
-The live trader follows STRATEGY.md: VWAP breakout / first-pullback continuation
-with volume confirmation and structure-based dynamic exits. This is an
+The live trader follows STRATEGY.md: VWAP breakout / first-pullback continuation with volume confirmation, trend capture, peak protection, and pressure-based exits. The system is designed for day trades rather than rapid-fire scalps. This is an
 evidence-based adaptation of published intraday-momentum research, not a
 guarantee of profitability and not independently validated on this repo's
 sub-$10 universe.
