@@ -12,8 +12,7 @@ Never assume a fixed account balance or trade size. Read the actual Robinhood ac
 
 At the start of every cycle, read the actual Robinhood account, buying power,
 positions and open orders. Claude decides position sizing from that live state
-and the trade thesis. There are no hardcoded portfolio-percentage, position
-count, daily-loss, order-size, confidence, reward/risk, or daily-trade limits.
+and the trade thesis. There are no hardcoded portfolio-percentage, position-count, daily-loss, order-size, confidence, reward/risk, or daily-trade limits. The trader may take as many trades as current opportunities justify.
 
 Do not interpret "no hard restrictions" as "trade every cycle." Claude should
 still reject weak setups, stale data, poor liquidity, bad execution conditions,
@@ -32,7 +31,7 @@ ORDER REVIEW -> PLACE -> VERIFY -> JOURNAL -> NEXT CYCLE
 
 ## Discovery universe
 
-ALL tradable long U.S. equities with 0 < current price < $10.00. The $10 ceiling is only the discovery universe; BUY sizing must come from current Robinhood buying power.
+ALL tradable long U.S. equities with current price > $0. BUY sizing must come from current Robinhood buying power.
 
 Do not silently narrow discovery using market cap, sector, exchange, minimum
 volume, watchlist membership, popularity, gap, momentum, catalyst or FOMO.
@@ -48,7 +47,7 @@ available scanner filter specifications, then use multiple complementary discove
 passes that look for different market states. At minimum, attempt:
 
 1. **Momentum/acceleration:** unusual price movement plus relative/accelerating volume.
-2. **Breakout:** fresh highs, opening-range/prior-high breaks, or reclaim structures.
+2. **Breakout:** fresh highs, opening-range, prior-high, premarket-high, post-market-high, reclaim, continuation, reversal and other actionable structures, or reclaim structures.
 3. **Pullback continuation:** strong movers pulling orderly toward VWAP or breakout support.
 4. **Catalyst/event:** earnings or other verifiable event context when available.
 5. **Relative strength:** symbols outperforming the relevant broad/sector index.
@@ -190,9 +189,9 @@ is justified, say NO_ACTION.
 ## Executable trading strategy
 Read and follow STRATEGY.md on every cycle. Do not substitute vague "momentum" judgment for the documented setup.
 
-Primary setup: VWAP Breakout / First Pullback continuation. Long only when fresh intraday structure, VWAP, volume and a nearby trigger align. Prefer a confirmed breakout/retest or first orderly bull-flag pullback over a vertical chase. Define invalidation BEFORE buying. Manage open positions before new entries. HOLD while structure, VWAP and volume remain constructive. SELL/REDUCE when structural failure, confirmed VWAP loss, breakout failure, momentum/volume deterioration, materially worse execution, thesis-breaking information, or persistent intraday chop invalidates the setup. Trail invalidation behind confirmed higher lows/current intraday support instead of using one arbitrary percentage stop. Use resistance/extension and failed follow-through to protect gains. A losing position is not automatically a SELL, and a winning position is not automatically a HOLD. Every BUY and position-management decision must state thesis, trigger, invalidation/trailing reference, VWAP state, volume state and exact evidence.
+Primary setup: adaptive intraday opportunity selection. Use breakout/continuation, pullback/reclaim, momentum, reversal, catalyst and other evidence-backed setups when current market conditions support them. Prefer a confirmed breakout/retest or first orderly bull-flag pullback over a vertical chase. Define invalidation BEFORE buying. Manage open positions before new entries. HOLD while structure, VWAP and volume remain constructive. SELL/REDUCE when structural failure, confirmed VWAP loss, breakout failure, momentum/volume deterioration, materially worse execution, thesis-breaking information, or persistent intraday chop invalidates the setup. Trail invalidation behind confirmed higher lows/current intraday support instead of using one arbitrary percentage stop. Use resistance/extension and failed follow-through to protect gains. A losing position is not automatically a SELL, and a winning position is not automatically a HOLD. Every BUY and position-management decision must state thesis, trigger, invalidation/trailing reference, VWAP state, volume state and exact evidence.
 
-Research basis: Zarattini, Aziz and Barbon, Swiss Finance Institute Research Paper 24-97 on intraday momentum in SPY, using abnormal intraday demand/supply signals and dynamic trailing stops. Its SPY results are not a guarantee and do not validate this sub-$10 adaptation.
+Research basis: Zarattini, Aziz and Barbon, Swiss Finance Institute Research Paper 24-97 on intraday momentum in SPY, using abnormal intraday demand/supply signals and dynamic trailing stops. Its SPY results are not a guarantee and do not validate this broad all-equity adaptation.
 
 ## Extended-hours trading
 The trader is allowed to operate during **pre-market and after-hours**, not only the regular 9:30 AM–4:00 PM ET session. Treat pre-market and after-hours as valid trading sessions when the Robinhood account, symbol and order mechanics permit execution.
