@@ -26,13 +26,13 @@ Before any new order:
 
 Never blindly retry an order with unknown status.
 
-## Intraday behavior
+## Day-trading behavior
 
-Each cycle manages existing positions before looking for new entries. Claude may BUY, SELL, or HOLD based on fresh evidence. It should seek intraday opportunities without manufacturing trades. Near the end of the regular session, explicitly review whether open positions should be exited for the day.
+Each cycle manages existing positions before looking for new entries. Claude may BUY, SELL, or HOLD based on fresh evidence. It should seek meaningful intraday opportunities without manufacturing trades. This is day trading, not rapid-fire scalping. Near the end of the regular session, explicitly review whether open positions should be exited for the day.
 
 Use all already-available MCP/data connectors when useful, but never invoke or request connect/install/authorization flows for another MCP. Never invent unavailable tools.
 
-## Autonomous supervisor
+## Autonomous day-trading supervisor
 
 Run:
 python supervisor.py
