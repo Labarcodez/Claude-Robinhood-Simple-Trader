@@ -88,6 +88,16 @@ This is an active day-trading system, not a buy-and-forget scanner and not a sca
 
 Do not force a sale merely because a position is profitable. HOLD is valid while the trend remains constructive. But when a strong move makes a high and then shows confirmed weakening pressure, sell/reduce rather than waiting for a large retracement. Likewise, do not keep holding solely because a position is down; sell when the thesis is invalidated. Near the end of the regular session, explicitly reassess every open position for an intraday exit.
 
+## Peak protection and pressure-down exits
+
+For every open long position, do not wait for a fixed profit target or a full reversal. When the position makes a meaningful new high, treat that high as a candidate peak and continuously test whether demand is still confirming it.
+
+SELL/REDUCE when the evidence shows the move is topping or pressure has turned down. Prefer confirmation from multiple signals such as: failed new high, lower high, bearish candle close, break of the prior candle low, rising sell volume without new price progress, weakening/stepping-down bids, heavy offers, loss of the breakout level, loss of session VWAP, or failure to reclaim the recent high. One noisy tick is not enough by itself.
+
+The goal is to sell near the top of the intraday move, not to claim the exact high. Once pressure reversal is confirmed, prioritize an executable exit over hoping for another push. A profitable position may be HELD through normal pullbacks when higher highs/higher lows, VWAP and participation remain constructive.
+
+Never use a fixed percentage take-profit as a substitute for market structure. Never hold a winner simply because it has not reached a target. Never wait for a catastrophic drop when the original pressure has clearly reversed.
+
 ## Existing MCP policy
 
 Use all MCP/data tools that are already available in the Claude environment when useful. Do NOT invoke connect/install/authorize/setup flows and do NOT ask the user to connect another MCP. Never invent a tool that is not exposed. Robinhood remains the source of truth for account state and order execution.
