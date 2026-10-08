@@ -7,8 +7,7 @@ Claude is the trading brain. The local Python supervisor provides scheduling,
 persistent state, duplicate-order protection, logging and recovery. Robinhood
 MCP is the source of broker/account/market data and the execution interface.
 
-There are NO arbitrary portfolio percentage, position-count, daily-loss,
-order-size, confidence, reward/risk or daily-trade hard limits. Claude reads
+There are NO arbitrary portfolio percentage, position-count, daily-loss, order-size, confidence, reward/risk or daily-trade hard limits. The trader may take as many trades as current opportunities justify. Claude reads
 the actual Robinhood wallet/account state and decides sizing. Operational
 checks remain mandatory.
 
@@ -51,7 +50,7 @@ scheduler process alone cannot manufacture a Robinhood MCP connection.
 
 ## Universe
 
-Discover ALL tradable long U.S. equities with 0 < current price < $10.00. The $10 ceiling is only a discovery ceiling. BUY sizing must come from actual Robinhood buying power and current broker rules.
+Discover ALL tradable long U.S. equities with current price > $0. The $10 ceiling is only a discovery ceiling. BUY sizing must come from actual Robinhood buying power and current broker rules.
 Scanner filters only rank/prioritize. Use multiple passes when capped.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
@@ -129,9 +128,9 @@ python run.py --status
 ## Executable trading strategy
 Read and follow STRATEGY.md on every cycle. Do not substitute vague "momentum" judgment for the documented setup.
 
-Primary setup: VWAP Breakout / First Pullback continuation. Long only when fresh intraday structure, VWAP, volume and a nearby trigger align. Prefer a confirmed breakout/retest or first orderly bull-flag pullback over a vertical chase. Define invalidation BEFORE buying. Manage open positions before new entries. HOLD while structure, VWAP and volume remain constructive. SELL/REDUCE when structural failure, confirmed VWAP loss, breakout failure, momentum/volume deterioration, materially worse execution, thesis-breaking information, or persistent intraday chop invalidates the setup. Trail invalidation behind confirmed higher lows/current intraday support instead of using one arbitrary percentage stop. Use resistance/extension and failed follow-through to protect gains. A losing position is not automatically a SELL, and a winning position is not automatically a HOLD. Every BUY and position-management decision must state thesis, trigger, invalidation/trailing reference, VWAP state, volume state and exact evidence.
+Primary setup: adaptive intraday opportunity selection. Use breakout/continuation, pullback/reclaim, momentum, reversal, catalyst and other evidence-backed setups when current market conditions support them. Prefer a confirmed breakout/retest or first orderly bull-flag pullback over a vertical chase. Define invalidation BEFORE buying. Manage open positions before new entries. HOLD while structure, VWAP and volume remain constructive. SELL/REDUCE when structural failure, confirmed VWAP loss, breakout failure, momentum/volume deterioration, materially worse execution, thesis-breaking information, or persistent intraday chop invalidates the setup. Trail invalidation behind confirmed higher lows/current intraday support instead of using one arbitrary percentage stop. Use resistance/extension and failed follow-through to protect gains. A losing position is not automatically a SELL, and a winning position is not automatically a HOLD. Every BUY and position-management decision must state thesis, trigger, invalidation/trailing reference, VWAP state, volume state and exact evidence.
 
-Research basis: Zarattini, Aziz and Barbon, Swiss Finance Institute Research Paper 24-97 on intraday momentum in SPY, using abnormal intraday demand/supply signals and dynamic trailing stops. Its SPY results are not a guarantee and do not validate this sub-$10 adaptation.
+Research basis: Zarattini, Aziz and Barbon, Swiss Finance Institute Research Paper 24-97 on intraday momentum in SPY, using abnormal intraday demand/supply signals and dynamic trailing stops. Its SPY results are not a guarantee and do not validate this broad all-equity adaptation.
 
 ## Extended-hours trading
 The trader is allowed to operate during **pre-market and after-hours**, not only the regular 9:30 AM–4:00 PM ET session. Treat pre-market and after-hours as valid trading sessions when the Robinhood account, symbol and order mechanics permit execution.
