@@ -36,6 +36,8 @@ connections; do not invoke connect/install/authorize flows.
     python run.py --status
     python run.py --kill
     python run.py --unkill
+    python run.py
+    python run.py --start
     python supervisor.py
     pytest
 
@@ -46,11 +48,12 @@ Optional environment variables:
     CLAUDE_COMMAND="claude -p"
     TRADER_DB=data/trader.db
 
-The supervisor loads .env when python-dotenv is installed. The exact Claude Code
-command and MCP connection must be available on the machine. A Python scheduler
-cannot create a Robinhood MCP connection by itself. Do not consider the system
-autonomous until a real Claude cycle successfully reads the Robinhood account
-through the connected MCP.
+The supervisor loads .env when python-dotenv is installed. `python run.py` now
+starts the always-on supervisor by default; `python run.py --start` is an explicit
+alias. The exact Claude Code command and Robinhood MCP connection must still exist
+in the runtime environment because a Python process cannot manufacture a broker
+connection. Once that environment is configured, no manual symbol selection,
+trade entry, or cycle management is required.
 
 ## Trading universe
 
