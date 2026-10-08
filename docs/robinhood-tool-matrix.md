@@ -2,7 +2,7 @@
 
 Verified against Robinhood's current "Trading with your agent" support page on 2026-10-08.
 
-Robinhood currently lists **92 tools for external agents** on that page. One additional market-data tool, `get_earnings_transcript`, is listed for built-in agents only. The project is intentionally **long U.S. equities only**, so the trader should use every applicable account, market-data, equity, scanner, alert, advanced-order, and Legend tool when it materially improves a decision, while leaving options/crypto execution outside this project's scope.
+Robinhood currently lists **93 tools for external agents** on that page. One additional market-data tool, `get_earnings_transcript`, is listed for built-in agents only. The project is intentionally **long U.S. equities only**, so the trader should use every applicable account, market-data, equity, scanner, alert, advanced-order, and Legend tool when it materially improves a decision, while leaving options/crypto execution outside this project's scope.
 
 Source: https://robinhood.com/us/en/support/articles/trading-with-your-agent/
 
