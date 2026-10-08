@@ -39,6 +39,27 @@ carrying regular-session levels into extended hours. Give greater weight to
 fresh news, actual extended-hours volume, spread/depth and the current executable
 order type outside regular hours.
 
+## Market-regime and candidate ranking
+
+Before a new BUY, classify the broad market and relevant sector/index as
+TRENDING_UP, MIXED, or RISK_OFF/WEAK using current available index data.
+Prefer candidates with clear relative strength when the broader regime is mixed
+or weak. Do not automatically reject every trade in a weak regime; require a
+specific stock-level reason for strength.
+
+Rank surviving candidates using a weighted evidence stack:
+- structure quality and proximity to a valid trigger;
+- relative volume and volume acceleration;
+- VWAP alignment;
+- relative strength versus market/sector;
+- catalyst/event quality when verifiable;
+- spread/depth and expected execution quality;
+- extension/rejection/chase risk;
+- data freshness.
+
+A high composite score is a research priority, not an automatic BUY. The final
+decision still requires a coherent thesis and defined invalidation.
+
 ## Entry A — Breakout continuation
 
 BUY only after a fresh candle breaks a defined resistance/trigger while price is
@@ -58,6 +79,19 @@ Avoid vertical extension far above VWAP with no nearby invalidation, repeated
 upper-wick rejection, immediate breakout failure, collapsing participation,
 materially poor spread/depth, stale/contradictory data, or an entry justified
 only because price already rose sharply.
+
+## Scanner workflow
+
+Run multiple complementary discovery passes rather than trusting one scanner:
+momentum/acceleration, breakout/reclaim, pullback continuation, catalyst/event,
+and relative-strength scans when the corresponding scanner filters are available.
+Deduplicate the results, then deep-research only the strongest candidates.
+
+Scanner results are intentionally broad. Do not add arbitrary market-cap, minimum
+volume, gap, momentum, or popularity restrictions merely to make the list smaller.
+Liquidity, spread, stale data and tradability are execution-quality filters after
+discovery. If a scanner cannot express a desired filter, do not invent one; use
+another available data source or state the limitation.
 
 ## Position management
 
