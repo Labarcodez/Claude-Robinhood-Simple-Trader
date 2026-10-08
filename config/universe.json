@@ -1,14 +1,14 @@
 {
   "asset_class": "us_equities",
   "side": "long_only",
-  "minimum_price": 0.0,
-  "max_price": 10.0,
-  "max_price_is_exclusive": true,
+  "minimum_price": 0,
+  "max_price": null,
+  "max_price_is_exclusive": false,
   "minimum_market_cap": null,
   "maximum_market_cap": null,
   "minimum_daily_volume": null,
   "required_sector": null,
   "required_exchange": null,
   "watchlist_only": false,
-  "notes": "Discovery universe is all tradable long U.S. equities with a current price greater than $0 and strictly below $10.00. Do not add arbitrary market-cap, sector, exchange, minimum-volume, minimum-price, watchlist, or momentum requirements at discovery. Scanner filters rank and prioritize candidates; they do not define the universe. Tradability, stale-data, spread, liquidity, Level 2, and deterministic risk checks may reject a candidate after discovery."
+  "notes": "Discovery universe is all tradable long U.S. equities with a current price greater than $0. Includes sub-$2 stocks, low-market-cap stocks, and stocks already up more than 30% on the day. Do not impose arbitrary price, market-cap, percentage-gain, sector, exchange, minimum-volume, watchlist, popularity, momentum, gap, catalyst, or FOMO restrictions at discovery. Scanner filters rank and prioritize candidates; they do not define the universe. Tradability, stale-data, spread, liquidity, Level 2, and broker execution rules remain valid post-discovery checks."
 }
