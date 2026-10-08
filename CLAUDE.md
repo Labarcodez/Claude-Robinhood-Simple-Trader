@@ -98,30 +98,88 @@ python chart.py --input <json> --symbol <SYMBOL> --output data/charts/<SYMBOL>.p
 Never claim a visual chart inspection occurred unless the image was actually
 rendered and inspected.
 
-## Relevant Robinhood tools
+## Robinhood MCP tool strategy
 
-Use the tools actually exposed by the connected MCP; never invent tools.
+Use the **current tool set exposed by the connected Robinhood MCP**. Robinhood's
+current support page lists 92 tools for external agents. The full catalog and
+project scope are recorded in `docs/robinhood-tool-matrix.md`.
 
-Account/performance:
-get_accounts, get_portfolio, get_realized_pnl, get_pnl_trade_history, search
+Do not mechanically call every tool on every cycle. Use the broadest relevant
+tool set for the decision, and never invent a tool that is not exposed.
 
-Discovery/watchlists:
-get_scans, get_scanner_filter_specs, create_scan, run_scan,
-update_scan_filters, update_scan_config, get_watchlists, get_watchlist_items,
-get_popular_watchlists, create_watchlist, update_watchlist, follow_watchlist,
-unfollow_watchlist, add_to_watchlist, remove_from_watchlist
+### State and approvals — check first
+- `get_accounts`
+- `get_portfolio`
+- `get_equity_positions`
+- `get_equity_orders`
+- `get_trade_approval_setting`
+- `get_trade_approvals`
+- `get_realized_pnl` / `get_pnl_trade_history` when reviewing performance
 
-Market:
-get_equity_quotes, get_equity_historicals, get_equity_technical_indicators,
-get_equity_price_book, get_equity_fundamentals, get_financials,
-get_earnings_results, get_earnings_calendar, get_indexes, get_index_quotes
+If trade approvals are enabled, determine whether the requested action can
+actually be executed autonomously. Never claim a trade was placed if Robinhood
+requires manual approval.
 
-Execution:
-get_equity_positions, get_equity_tax_lots, get_equity_orders,
-get_equity_tradability, review_equity_order, place_equity_order,
-cancel_equity_order
+### Broad discovery
+Use:
+- `get_scanner_filter_specs` before creating/changing scans;
+- `get_scans`, `preview_scan`, `create_scan`, `update_scan_filters`,
+  `update_scan_config`, `run_scan`, and `get_scanner_datapoints`;
+- `get_watchlists`, `get_watchlist_items`, and popular/followed lists as
+  supplementary discovery, never as the entire universe.
 
-Do not use options or crypto execution tools. Use any MCP/data connector already available in the Claude environment when it materially improves research, but never invoke connect/install/authorize/setup flows or ask the user to connect another MCP. Never invent an unavailable tool.
+Run multiple complementary scan families: momentum/acceleration,
+breakout/reclaim, pullback continuation, catalyst/event, and relative strength.
+Deduplicate symbols and report scanner coverage honestly when result limits cap
+a scan.
+
+### Candidate research
+For serious candidates use the appropriate combination of:
+- `get_equity_quotes`
+- `get_equity_tradability`
+- `get_equity_historicals`
+- `get_equity_technical_indicators`
+- `get_equity_price_book`
+- `get_equity_fundamentals`
+- `get_financials`
+- `get_equity_news`
+- `get_earnings_results`
+- `get_earnings_calendar`
+- `get_sec_filing_index`, `get_sec_filing`,
+  `get_sec_filing_facts`, `get_sec_filing_facts_catalog`
+- `get_equity_analyst_ratings`
+- `get_index_quotes`, `get_index_historicals`, and `get_indexes`
+- `get_politician_trades` only as supplementary context, never as a signal.
+
+Use Level 2, fresh quotes, OHLCV, technicals, liquidity and execution quality
+before trading. A headline, analyst rating, scanner rank, or FOMO score is never
+a BUY signal by itself.
+
+### Monitoring and execution
+- Use `get_alerts`, `get_alert_log`, and alert-management tools when persistent
+  monitoring materially helps; do not create alert clutter every cycle.
+- Use `get_advanced_orders`, `review_advanced_order`,
+  `place_advanced_order`, and `cancel_advanced_order` only when the live
+  Robinhood response confirms the order mechanics fit the security and session.
+- For ordinary equity execution use `get_equity_tradability`,
+  `review_equity_order`, `place_equity_order`, `cancel_equity_order`,
+  followed by `get_equity_orders` and `get_equity_positions`.
+- Use Legend chart/indicator tools when they add analytical evidence, but do not
+  spend tokens configuring charts when direct market data is sufficient.
+
+Options and crypto tools exist but are outside this repository's trading scope.
+Do not use their execution tools unless the project scope is explicitly changed.
+
+### Order protocol
+Before every BUY or SELL: refresh account/position/order state, verify
+tradability, refresh quote and relevant market data, reconcile unresolved local
+order intents, then review the exact order. After submission, verify broker order
+status and actual filled position quantity. If status is unknown, reconcile the
+existing broker order before any retry.
+
+Robinhood remains the source of truth. If the MCP exposes a different tool set
+than the support page, use only the tools actually exposed and state the missing
+capability in the cycle report.
 
 ## Autonomous execution
 
