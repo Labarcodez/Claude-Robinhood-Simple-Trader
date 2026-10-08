@@ -56,6 +56,30 @@ Scanner filters only rank/prioritize. Use multiple passes when capped.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
 
+## Current Robinhood MCP tool utilization
+
+Robinhood's current support page lists 92 tools for external agents. Use the
+complete applicable catalog in `docs/robinhood-tool-matrix.md`. Do not call
+everything blindly; use the tool that answers the current decision and never
+invent an unavailable tool.
+
+At cycle start use account/portfolio/position/order/approval state. For discovery
+use scanner filter specs plus multiple scans, previews, scanner datapoints and
+watchlists as supplementary sources. For serious candidates use fresh quotes,
+tradability, OHLCV, technical indicators, Level 2, fundamentals, financials,
+equity news, earnings, SEC filings/facts, analyst ratings and index/relative-
+strength data when relevant. Use realized P&L/trade history for broker-verified
+performance review. Use alerts/alert logs and advanced-order tools when they
+materially improve active monitoring or execution and the live broker response
+supports them. Legend chart/indicator tools may be used for deeper chart
+validation when available.
+
+Options and crypto execution remain outside this project's scope. Never claim a
+tool was used unless it was actually exposed and called.
+
+If trade approvals are enabled, respect the broker's approval workflow and never
+claim an order was placed without broker confirmation.
+
 ## Discovery quality
 
 Use multiple complementary scan families when available: momentum/acceleration,
