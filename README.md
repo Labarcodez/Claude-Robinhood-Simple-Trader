@@ -57,10 +57,7 @@ trade entry, or cycle management is required.
 
 ## Trading universe
 
-Discovery covers **all tradable long U.S. equities with a current price strictly
-at any price.00 and above $0**. The $10 ceiling is the discovery universe, not a
-signal to buy cheap stocks. Every BUY is sized from actual Robinhood buying
-power and broker-reported tradability/fractional-share support.
+Discovery covers **all tradable long U.S. equities with a current price above $0**. This includes sub-$2 stocks, low-market-cap stocks, and stocks already up more than 30% on the day. There is no discovery price ceiling, market-cap floor, or daily percentage-gain ceiling. Every BUY is sized from actual Robinhood buying power and broker-reported tradability/fractional-share support.
 
 No arbitrary price, market-cap, percentage-gain, sector, exchange, minimum-volume, watchlist, popularity, momentum, gap or FOMO restriction is applied at discovery.
 Scanner filters rank candidates; they do not define the universe.
@@ -82,7 +79,7 @@ hardcoding a tiny watchlist.
 
 ## Architecture
 
-supervisor.py -> Claude -> Robinhood account -> broad broad all-equity discovery ->
+supervisor.py -> Claude -> Robinhood account -> broad all-equity discovery ->
 open-position management -> candle/volume/FOMO/Level 2 research -> Claude
 decision -> operational execution guard -> Robinhood order review/place/verify ->
 journal -> next cycle reconciliation.
@@ -93,7 +90,7 @@ existing positions before new entries.
 
 ## Trading strategy
 
-The live trader follows STRATEGY.md: VWAP breakout / first-pullback continuation with volume confirmation, trend capture, peak protection, and pressure-based exits. The system is designed for day trades rather than rapid-fire scalps. This is an
+The live trader follows STRATEGY.md: adaptive intraday entries across breakouts, pullbacks, reclaims, momentum continuation, reversals and catalyst-driven setups, with dynamic position management, peak protection and pressure-based exits. The system is designed for day trades rather than rapid-fire scalps. This is an
 evidence-based adaptation of published intraday-momentum research, not a
 guarantee of profitability and not independently validated on this repo's
 broad all-equity universe.
