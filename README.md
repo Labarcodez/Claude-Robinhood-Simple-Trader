@@ -65,6 +65,19 @@ Scanner filters rank candidates; they do not define the universe.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
 
+## Automatic scan and decision pipeline
+
+Each cycle is a complete loop: reconcile account/orders -> manage existing
+positions -> classify market regime -> run multiple discovery passes -> dedupe ->
+deep-research the strongest candidates -> validate execution -> place/verify if
+justified -> journal. The trader does not need to manually pick symbols or enter
+trades.
+
+The scanner deliberately stays broad at discovery. It then becomes selective
+using structure, VWAP, volume quality, relative strength, catalyst evidence,
+Level 2, liquidity and execution conditions. This improves signal quality without
+hardcoding a tiny watchlist.
+
 ## Architecture
 
 supervisor.py -> Claude -> Robinhood account -> broad sub-$10 discovery ->
@@ -98,7 +111,6 @@ execution quality matters without creating a blanket ban.
 
 ## Live trading warning
 
-Orders are real-money trades. The project does not guarantee profit. Fast
-momentum trading can lose money rapidly. Keep the kill switch available and
+Orders are real-money trades. The project does not guarantee profit. Intraday trading can lose money rapidly. Keep the kill switch available and
 verify the Robinhood MCP connection, account state and order workflow before
 running unattended.
