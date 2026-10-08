@@ -56,6 +56,21 @@ Scanner filters only rank/prioritize. Use multiple passes when capped.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
 
+## Discovery quality
+
+Use multiple complementary scan families when available: momentum/acceleration,
+breakout/reclaim, pullback continuation, catalyst/event and relative strength.
+Deduplicate results and report actual/approximate coverage. Read scanner filter
+specifications before creating or changing scans.
+
+Before a new entry, classify broad market/sector regime from current index data
+as TRENDING_UP, MIXED, or RISK_OFF/WEAK. Favor strong relative strength and clean
+structure in mixed/weak regimes rather than automatically buying losers.
+
+Deep research only the strongest candidates: quote/tradability -> OHLCV -> VWAP/
+technicals -> volume -> relative strength -> catalyst -> Level 2/liquidity ->
+order mechanics -> thesis/invalidation -> sizing -> review.
+
 ## Momentum/FOMO
 
 Use account, scanner, quotes, historical candles/volume, technicals,
