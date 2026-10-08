@@ -10,6 +10,7 @@ try:
 except Exception:
     pass
 
+
 def status():
     c = load_config()
     connect().close()
@@ -29,27 +30,38 @@ def status():
     for row in recent(10):
         print(row)
 
-def cycle():
-    if kill_active():
-        print("KILL SWITCH ACTIVE — no trading activity.")
-        return
-    print("Trading cycle ready.")
-    print("Use supervisor.py for autonomous Claude + Robinhood MCP cycles.")
-    log_event("cycle_ready", f"mode={mode()}")
+
+def start():
+    """Start the always-on autonomous supervisor."""
+    from supervisor import main as supervisor_main
+    supervisor_main()
+
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--kill", action="store_true")
     p.add_argument("--unkill", action="store_true")
     p.add_argument("--status", action="store_true")
+    p.add_argument("--start", action="store_true",
+                   help="Start the always-on autonomous trader (also the default).")
     args = p.parse_args()
+
     if args.kill:
-        set_kill(True); print("Kill switch ACTIVATED."); return
+        set_kill(True)
+        print("Kill switch ACTIVATED.")
+        return
     if args.unkill:
-        set_kill(False); print("Kill switch CLEARED."); return
+        set_kill(False)
+        print("Kill switch CLEARED.")
+        return
     if args.status:
-        status(); return
-    cycle()
+        status()
+        return
+
+    # Default behavior is fully autonomous operation; --start is retained as
+    # an explicit alias for scripts and users who prefer a visible flag.
+    start()
+
 
 if __name__ == "__main__":
     main()
