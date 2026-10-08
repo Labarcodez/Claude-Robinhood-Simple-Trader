@@ -95,7 +95,7 @@ candle bodies/wicks, sequence, breakout/retest behavior and volume acceleration.
 
 ## Current Robinhood MCP tool utilization
 
-Robinhood's current support page lists 92 tools for external agents. Use the
+Robinhood's current support page lists 93 tools for external agents. Use the
 complete applicable catalog in `docs/robinhood-tool-matrix.md`. Do not call
 everything blindly; use the tool that answers the current decision and never
 invent an unavailable tool.
