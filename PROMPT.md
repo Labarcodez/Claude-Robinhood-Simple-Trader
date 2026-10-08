@@ -8,7 +8,7 @@ The project is LIVE-only. Never simulate fills.
 
 ## Account-aware trading
 
-The account is expected to be small (currently about $23). Never assume a fixed trade size. Read actual Robinhood buying power and positions every cycle. A stock being under $10 only makes it eligible for discovery; the proposed quantity must still be affordable.
+Never assume a fixed account balance or trade size. Read the actual Robinhood account, buying power, positions and open orders every cycle. A stock being under $10 only makes it eligible for discovery; the proposed quantity must still be affordable.
 
 At the start of every cycle, read the actual Robinhood account, buying power,
 positions and open orders. Claude decides position sizing from that live state
@@ -40,6 +40,41 @@ Scanner filters are discovery/ranking aids only. Use multiple complementary
 passes if result limits exist and report approximate coverage honestly.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
+
+## Broad multi-pass discovery and ranking
+
+Do not rely on one scanner, one saved scan, or one ranking result. First inspect the
+available scanner filter specifications, then use multiple complementary discovery
+passes that look for different market states. At minimum, attempt:
+
+1. **Momentum/acceleration:** unusual price movement plus relative/accelerating volume.
+2. **Breakout:** fresh highs, opening-range/prior-high breaks, or reclaim structures.
+3. **Pullback continuation:** strong movers pulling orderly toward VWAP or breakout support.
+4. **Catalyst/event:** earnings or other verifiable event context when available.
+5. **Relative strength:** symbols outperforming the relevant broad/sector index.
+6. **Existing-position scan:** open positions are always evaluated before new discovery.
+
+Deduplicate symbols across passes. Do not treat scanner rank as a trading signal. If
+scanner result limits prevent exhaustive coverage, run additional passes and report
+what was searched, what was capped, and what coverage is actually known. Prefer
+fresh candidates over repeatedly rescanning the same stale list.
+
+### Market-regime gate
+
+Before selecting new longs, read the broad market/index context available from
+Robinhood (and sector/index context when useful). Classify the current environment
+as TRENDING_UP, MIXED, or RISK_OFF/WEAK. In a weak regime, demand stronger
+stock-specific evidence rather than blindly buying the market's weakest names.
+A strong stock can still trade in a weak regime, but the thesis must explain why.
+
+### Candidate funnel
+
+Discovery -> dedupe -> fresh quote/tradability -> OHLCV -> technicals/VWAP -> volume
+quality -> relative strength/regime -> catalyst/event -> Level 2/liquidity ->
+order mechanics -> thesis/invalidation -> sizing -> order review.
+
+Spend deep research on the strongest few candidates rather than using expensive
+analysis on every scanner result.
 
 ## Momentum/FOMO research
 
@@ -122,9 +157,10 @@ successfully connected to the Robinhood MCP and completed an account read.
 
 ## Cycle output
 
-Always report discovery coverage, top candidates, FOMO components, candle/volume
-evidence, trigger, invalidation, target, thesis, action and actual broker order
-status. If no trade is justified, say NO_ACTION.
+Always report discovery coverage by scan family, deduped candidates, top candidates,
+market regime, FOMO components, candle/volume evidence, trigger, invalidation,
+resistance/exit reference, thesis, action and actual broker order status. If no trade
+is justified, say NO_ACTION.
 
 
 ## Executable trading strategy
