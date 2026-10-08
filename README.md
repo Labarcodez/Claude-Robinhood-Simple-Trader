@@ -58,12 +58,11 @@ trade entry, or cycle management is required.
 ## Trading universe
 
 Discovery covers **all tradable long U.S. equities with a current price strictly
-below $10.00 and above $0**. The $10 ceiling is the discovery universe, not a
+at any price.00 and above $0**. The $10 ceiling is the discovery universe, not a
 signal to buy cheap stocks. Every BUY is sized from actual Robinhood buying
 power and broker-reported tradability/fractional-share support.
 
-No arbitrary market-cap, sector, exchange, minimum-volume, watchlist,
-popularity, momentum, gap or FOMO restriction is applied at discovery.
+No arbitrary price, market-cap, percentage-gain, sector, exchange, minimum-volume, watchlist, popularity, momentum, gap or FOMO restriction is applied at discovery.
 Scanner filters rank candidates; they do not define the universe.
 
 No options, shorting, margin borrowing, crypto, OTC or leveraged products.
@@ -83,7 +82,7 @@ hardcoding a tiny watchlist.
 
 ## Architecture
 
-supervisor.py -> Claude -> Robinhood account -> broad sub-$10 discovery ->
+supervisor.py -> Claude -> Robinhood account -> broad broad all-equity discovery ->
 open-position management -> candle/volume/FOMO/Level 2 research -> Claude
 decision -> operational execution guard -> Robinhood order review/place/verify ->
 journal -> next cycle reconciliation.
@@ -97,7 +96,7 @@ existing positions before new entries.
 The live trader follows STRATEGY.md: VWAP breakout / first-pullback continuation with volume confirmation, trend capture, peak protection, and pressure-based exits. The system is designed for day trades rather than rapid-fire scalps. This is an
 evidence-based adaptation of published intraday-momentum research, not a
 guarantee of profitability and not independently validated on this repo's
-sub-$10 universe.
+broad all-equity universe.
 
 ## Extended-hours trading
 
