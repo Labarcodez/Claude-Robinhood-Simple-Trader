@@ -27,7 +27,7 @@ The only local hard stops are operational:
    submitting anything new.
 3. Review recent journal and current portfolio context.
 4. Assess market regime.
-5. Discover broadly across ALL tradable long U.S. equities with 0 < price < $10.00. A BUY is allowed only when the actual broker-reported buying power can fund the proposed quantity/notional.
+5. Discover broadly across ALL tradable long U.S. equities with price > $0, including sub-$2 stocks, low-market-cap stocks, and stocks already up more than 30% on the day. A BUY is allowed only when the actual broker-reported buying power can fund the proposed quantity/notional.
 6. Use multiple scans/passes when scanner result limits prevent broad coverage.
 7. Rank candidates by momentum, FOMO evidence, candles, volume, VWAP,
    breakouts/retests, relative strength, catalyst, fundamentals, liquidity,
@@ -48,10 +48,7 @@ The only local hard stops are operational:
 
 ## Universe
 
-Initial discovery universe: ALL tradable long U.S. equities with current price
-greater than $0 and strictly at any price.00.
-
-The $10 ceiling is a discovery rule, not a buy signal. It is the user's affordability-oriented discovery range, not a requirement to buy. Do not add arbitrary
+Initial discovery universe: ALL tradable long U.S. equities with current price greater than $0. There is no maximum price, minimum price, market-cap floor, or daily percentage-gain ceiling. Do not add arbitrary
 market-cap, sector, exchange, minimum-volume, watchlist, popularity, gap,
 momentum, catalyst or FOMO restrictions that prevent discovery.
 
@@ -100,8 +97,7 @@ rendered and inspected.
 
 ## Robinhood MCP tool strategy
 
-Use the **current tool set exposed by the connected Robinhood MCP**. Robinhood's
-current support page lists 92 tools for external agents. The full catalog and
+Use the **current tool set exposed by the connected Robinhood MCP**. Robinhood's current support page lists 93 tools for external agents. The full catalog and
 project scope are recorded in `docs/robinhood-tool-matrix.md`.
 
 Do not mechanically call every tool on every cycle. Use the broadest relevant
