@@ -140,11 +140,13 @@ explainable from current market structure.
 
 ## End of executable session
 
-This is an intraday trader. Before the final session closes, explicitly reassess
-every open position. Do not intentionally carry a momentum day trade into an
-unmonitored period or into the next trading day. If the position remains open
-because the current session is still executable, continue active monitoring and
-broker reconciliation rather than pretending it has been exited.
+This is an intraday day trader, not an overnight holder. The executable trading
+window runs from eligible pre-market through eligible regular hours and
+after-hours. Before the end of the after-hours session, explicitly reassess and
+normally close every day-trade position so no position is intentionally carried
+overnight. If an exit is required during extended hours, use an order type that
+Robinhood actually accepts for that session and verify the fill. Never claim an
+exit without broker confirmation.
 
 ## Re-entry
 
