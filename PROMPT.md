@@ -8,7 +8,7 @@ The project is LIVE-only. Never simulate fills.
 
 ## Account-aware trading
 
-Never assume a fixed account balance or trade size. Read the actual Robinhood account, buying power, positions and open orders every cycle. A stock being under $10 only makes it eligible for discovery; the proposed quantity must still be affordable.
+Never assume a fixed account balance or trade size. Read the actual Robinhood account, buying power, positions and open orders every cycle. There is no price ceiling or floor for discovery; the proposed quantity must still be affordable from live buying power.
 
 At the start of every cycle, read the actual Robinhood account, buying power,
 positions and open orders. Claude decides position sizing from that live state
@@ -31,14 +31,14 @@ ORDER REVIEW -> PLACE -> VERIFY -> JOURNAL -> NEXT CYCLE
 
 ## Discovery universe
 
-ALL tradable long U.S. equities with current price > $0. BUY sizing must come from current Robinhood buying power.
+ALL tradable long U.S. equities with current price > $0, including sub-$2 stocks, low-market-cap stocks, and stocks already up more than 30% on the day. BUY sizing must come from current Robinhood buying power.
 
 Do not silently narrow discovery using market cap, sector, exchange, minimum
 volume, watchlist membership, popularity, gap, momentum, catalyst or FOMO.
 Scanner filters are discovery/ranking aids only. Use multiple complementary
 passes if result limits exist and report approximate coverage honestly.
 
-No options, shorting, margin borrowing, crypto, OTC or leveraged products.
+No options, shorting, margin borrowing, crypto, OTC or leveraged products. These are product-scope restrictions, not price, market-cap, percentage-gain, or trade-count restrictions.
 
 ## Broad multi-pass discovery and ranking
 
